@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "project": "Materials Commons",
+  "title": "Infrastructure assessment questionnaire",
+  "scope": "The catalogue focuses on infrastructures that manage, expose, and enable the reuse of materials data, rather than on infrastructures that generate the data or provide only computational or experimental resources.",
+  "sections": [
+    "Infrastructure & Governance",
+    "Scientific Scope",
+    "Data Representation & Standards",
+    "Programmatic Access & Interfaces",
+    "Interoperability & Reuse"
+  ],
+  "sectionPurposes": {
+    "Infrastructure & Governance": "Identify the infrastructure and responsible organisations.",
+    "Scientific Scope": "Describe the scientific coverage and materials data.",
+    "Data Representation & Standards": "Assess formats, schemas, metadata and standards (T7.2).",
+    "Programmatic Access & Interfaces": "Assess APIs and machine access (T7.3).",
+    "Interoperability & Reuse": "Assess converters and technical documentation."
+  },
+  "questions": [
+    {
+      "id": "s1q1",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What is the name of the infrastructure?",
+      "help": "Official name.",
+      "type": "text",
+      "options": null
+    },
+    {
+      "id": "s1q2",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What is its main website?",
+      "help": "Main public entry point.",
+      "type": "url",
+      "options": null
+    },
+    {
+      "id": "s1q3",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "Which organisation(s) operate or manage it?",
+      "help": "Responsible organisations.",
+      "type": "textarea",
+      "options": null
+    },
+    {
+      "id": "s1q4",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "Is a technical contact available?",
+      "help": "Technical contact for APIs, schemas, formats.",
+      "type": "contact",
+      "options": [
+        "Yes",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s1q5",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What kind of infrastructure is it?",
+      "help": "Select all that apply.",
+      "type": "multi",
+      "options": [
+        "Repository",
+        "Data platform",
+        "Data space",
+        "Knowledge Graph",
+        "Registry",
+        "Workflow platform",
+        "HPC",
+        "Cloud service",
+        "Analysis platform",
+        "ELN/LIMS",
+        "Synchrotron",
+        "Other"
+      ]
+    },
+    {
+      "id": "s1q6",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What are the access conditions?",
+      "help": "General access policy.",
+      "type": "multi",
+      "options": [
+        "Public",
+        "Registration required",
+        "Restricted",
+        "By invitation",
+        "Commercial",
+        "Mixed"
+      ]
+    },
+    {
+      "id": "s1q7",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What is the funding horizon?",
+      "help": "How long is the infrastructure currently financed, and by whom?",
+      "type": "funding",
+      "options": null
+    },
+    {
+      "id": "s1q8",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "Is there willingness to join a federation?",
+      "help": "Willingness to participate in a federation, both technically (e.g. identity and access management, protocols, interoperability) and legally (e.g. licensing data for reuse).",
+      "type": "federation",
+      "options": null
+    },
+    {
+      "id": "s1q9",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "What is the scale and usage of the infrastructure?",
+      "help": "Approximate size of the infrastructure and level of usage.",
+      "type": "scale",
+      "options": null
+    },
+    {
+      "id": "s2q1",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "Which materials domains does it cover?",
+      "help": "Scientific domains represented.",
+      "type": "multi",
+      "options": [
+        "Metals",
+        "Ceramics",
+        "Polymers",
+        "Composites",
+        "Semiconductors",
+        "Batteries",
+        "Catalysts",
+        "Biomaterials",
+        "Construction materials",
+        "Functional materials",
+        "Cross-domain",
+        "Molecular systems",
+        "Hybrid materials",
+        "Other"
+      ]
+    },
+    {
+      "id": "s2q2",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "What kinds of materials data does it provide?",
+      "help": "Nature/origin of datasets.",
+      "type": "groupmulti",
+      "options": {
+        "Research context": [
+          "Fundamental research",
+          "Applied research",
+          "Industrial data"
+        ],
+        "Data source/origin": [
+          "Literature-extracted data",
+          "Experimentally generated data",
+          "Computationally generated data",
+          "Other"
+        ]
+      }
+    },
+    {
+      "id": "s2q3",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "How is the data curated or quality-controlled?",
+      "help": "Identify whether and how data are checked, validated, standardized, or enriched.",
+      "type": "multi",
+      "options": [
+        "No curation",
+        "Automated validation/quality checks",
+        "Automated data cleaning/standardization",
+        "Human-reviewed/validated",
+        "Expert-curated",
+        "Combination of automated and human curation",
+        "Not specified",
+        "Other"
+      ]
+    },
+    {
+      "id": "s2q4",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "Which experimental techniques are represented?",
+      "help": "Experimental methods.",
+      "type": "multi",
+      "options": [
+        "Electron microscopy",
+        "Optical microscopy",
+        "XRD",
+        "SAXS/WAXS",
+        "Neutron scattering",
+        "Spectroscopy",
+        "Tomography",
+        "Mechanical testing",
+        "Thermal analysis",
+        "Surface analysis",
+        "Other"
+      ]
+    },
+    {
+      "id": "s2q5",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "Which computational techniques are represented?",
+      "help": "Simulation methods.",
+      "type": "multi",
+      "options": [
+        "DFT",
+        "Molecular Dynamics",
+        "Wave-function based methods",
+        "Green-function-based methods",
+        "CALPHAD",
+        "FEM",
+        "Phase-field",
+        "Monte Carlo",
+        "CFD",
+        "AI/ML",
+        "Other"
+      ]
+    },
+    {
+      "id": "s3q1",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "In which machine-readable formats can data be obtained?",
+      "help": "Retrieval/export formats.",
+      "type": "multi",
+      "options": [
+        "NeXus",
+        "HDF5",
+        "CIF",
+        "CSV",
+        "JSON",
+        "JSON-LD",
+        "XML",
+        "RDF",
+        "NetCDF",
+        "TIFF",
+        "Proprietary",
+        "Other"
+      ]
+    },
+    {
+      "id": "s3q2",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Is the structure/schema of the data documented?",
+      "help": "Documented structure.",
+      "type": "statusurl",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s3q3",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Is metadata available in machine-readable form?",
+      "help": "Structured metadata.",
+      "type": "statusdetails",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s3q4",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Which metadata standards are implemented?",
+      "help": "Metadata standards.",
+      "type": "multi",
+      "options": [
+        "DCAT/DCAT-AP",
+        "DataCite",
+        "Dublin Core",
+        "NeXus",
+        "schema.org",
+        "Other"
+      ]
+    },
+    {
+      "id": "s3q5",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Which data/exchange standards are implemented?",
+      "help": "Scientific data standards.",
+      "type": "multi",
+      "options": [
+        "NeXus",
+        "OPTIMADE",
+        "CIF",
+        "RO-Crate",
+        "FAIR Digital Objects",
+        "Other"
+      ]
+    },
+    {
+      "id": "s3q6",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Which ontologies or controlled vocabularies are used?",
+      "help": "Semantic resources.",
+      "type": "multi",
+      "options": [
+        "EMMO",
+        "QUDT",
+        "PROV-O",
+        "SKOS",
+        "BFO",
+        "NeXus",
+        "PaNET",
+        "Domain ontology",
+        "Local vocabulary",
+        "None"
+      ]
+    },
+    {
+      "id": "s3q7",
+      "section": "Data Representation & Standards",
+      "sectionIndex": 2,
+      "title": "Which persistent identifiers are assigned?",
+      "help": "Stable identifiers.",
+      "type": "multi",
+      "options": [
+        "DOI",
+        "Handle",
+        "ARK",
+        "UUID",
+        "URI",
+        "Accession ID",
+        "Other"
+      ]
+    },
+    {
+      "id": "s4q1",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "Is programmatic data access available?",
+      "help": "Automatic software access.",
+      "type": "single",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s4q2",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "How can software access the data or metadata?",
+      "help": "Machine interfaces.",
+      "type": "multi",
+      "options": [
+        "REST API",
+        "GraphQL",
+        "OPTIMADE API",
+        "SPARQL",
+        "OAI-PMH",
+        "SDK",
+        "Bulk download",
+        "File transfer",
+        "Other"
+      ]
+    },
+    {
+      "id": "s4q3",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "Is the programmatic interface documented?",
+      "help": "Developer documentation.",
+      "type": "statusurl",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s4q4",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "What can be queried or filtered programmatically?",
+      "help": "Queryable entities.",
+      "type": "multi",
+      "options": [
+        "Materials",
+        "Structures",
+        "Properties",
+        "Datasets",
+        "Samples",
+        "Techniques",
+        "Authors",
+        "Dates",
+        "Semantic concepts",
+        "Full text",
+        "Other"
+      ]
+    },
+    {
+      "id": "s4q5",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "Which automated data retrieval mechanisms are available?",
+      "help": "Automated retrieval.",
+      "type": "multi",
+      "options": [
+        "API",
+        "Bulk download",
+        "Repository dump",
+        "Object storage",
+        "Streaming",
+        "File transfer",
+        "Query-result export",
+        "Other"
+      ]
+    },
+    {
+      "id": "s5q1",
+      "section": "Interoperability & Reuse",
+      "sectionIndex": 4,
+      "title": "Are converters or mappings to other formats or schemas available?",
+      "help": "Reusable converters.",
+      "type": "statusdetails",
+      "options": [
+        "Yes",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "s5q2",
+      "section": "Interoperability & Reuse",
+      "sectionIndex": 4,
+      "title": "Which technical documentation is available?",
+      "help": "Documentation supporting integration.",
+      "type": "multi",
+      "options": [
+        "Data model",
+        "Metadata model",
+        "Data formats",
+        "API specification",
+        "Ontology",
+        "Examples",
+        "SDK docs",
+        "Integration guide",
+        "Architecture docs",
+        "Other"
+      ]
+    },
+    {
+      "id": "s5q3",
+      "section": "Interoperability & Reuse",
+      "sectionIndex": 4,
+      "title": "Additional comments on interoperability",
+      "help": "Anything not covered above.",
+      "type": "textarea",
+      "options": null
+    }
+  ]
+}
