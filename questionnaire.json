@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 3,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
-  "scope": "The catalogue focuses on infrastructures that manage, expose, and enable the reuse of materials data, rather than on infrastructures that generate the data or provide only computational or experimental resources.",
+  "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
   "sections": [
     "Infrastructure & Governance",
     "Scientific Scope",
@@ -216,7 +216,7 @@
       "section": "Scientific Scope",
       "sectionIndex": 1,
       "title": "Which computational modelling and simulation approaches are represented?",
-      "help": "Select all that apply. Selecting Electronic-structure calculations reveals more detailed options.",
+      "help": "Select all that apply. If you select Electronic-structure calculations, additional electronic-structure methods will appear.",
       "type": "nestedmulti",
       "options": {
         "main": [

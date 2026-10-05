@@ -1,4 +1,4 @@
-# Materials Commons — Infrastructure Assessment Questionnaire
+# Materials Commons Infrastructure Assessment
 
 Static, offline-first Materials Commons infrastructure assessment questionnaire based on the supplied `Infrastructure_assessment_questionare.xlsx`. This version is configured for **GitHub Pages**.
 
@@ -36,3 +36,11 @@ Run `python3 -m http.server 8000` in this folder and open `http://localhost:8000
 ## Data/privacy model
 
 The site is static. Answers remain in browser `localStorage` until cleared and are exported locally as files. GitHub Pages hosts the questionnaire application but does not receive the completed assessment through this application. If central submission is later required, add an approved destination/workflow separately.
+
+## Version 3 corrections
+
+The assessment-information block contains **Name**, **Role / position**, **Organisation**, and **Date** only.
+The infrastructure name is collected in Question 1.
+
+The computational-modelling question uses a nested control: selecting **Electronic-structure calculations**
+reveals DFT, wave-function-based methods, Green-function-based methods, and other electronic-structure methods.
