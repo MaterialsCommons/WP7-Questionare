@@ -62,21 +62,21 @@
       "id": "s1q5",
       "section": "Infrastructure & Governance",
       "sectionIndex": 0,
-      "title": "What kind of infrastructure is it?",
+      "title": "What services or capabilities does the infrastructure provide?",
       "help": "Select all that apply.",
       "type": "multi",
       "options": [
-        "Repository",
-        "Data platform",
-        "Data space",
-        "Knowledge Graph",
-        "Registry",
-        "Workflow platform",
-        "HPC",
-        "Cloud service",
-        "Analysis platform",
-        "ELN/LIMS",
-        "Synchrotron",
+        "Data repository / data storage",
+        "Data discovery / catalogue",
+        "Data sharing / publication",
+        "Data integration / federation",
+        "Knowledge graph / semantic data services",
+        "Data processing / analysis",
+        "Workflow execution",
+        "Computational resources (HPC / cloud)",
+        "Laboratory data management (ELN / LIMS)",
+        "Experimental facility services",
+        "Data visualization",
         "Other"
       ]
     },
@@ -151,19 +151,23 @@
       "id": "s2q2",
       "section": "Scientific Scope",
       "sectionIndex": 1,
-      "title": "What kinds of materials data does it provide?",
-      "help": "Nature/origin of datasets.",
+      "title": "What types and sources of materials data or digital research objects does it provide?",
+      "help": "Select the data origins and digital research objects made available by the infrastructure.",
       "type": "groupmulti",
       "options": {
-        "Research context": [
-          "Fundamental research",
-          "Applied research",
-          "Industrial data"
-        ],
-        "Data source/origin": [
+        "Data origin": [
+          "Experimental data",
+          "Computational / simulation data",
           "Literature-extracted data",
-          "Experimentally generated data",
-          "Computationally generated data",
+          "Industrial / production data",
+          "Reference / curated data",
+          "Other"
+        ],
+        "Digital research objects": [
+          "Software / source code",
+          "Computational models",
+          "Workflows",
+          "Digital tools / applications",
           "Other"
         ]
       }
@@ -211,22 +215,34 @@
       "id": "s2q5",
       "section": "Scientific Scope",
       "sectionIndex": 1,
-      "title": "Which computational techniques are represented?",
-      "help": "Simulation methods.",
-      "type": "multi",
-      "options": [
-        "DFT",
-        "Molecular Dynamics",
-        "Wave-function based methods",
-        "Green-function-based methods",
-        "CALPHAD",
-        "FEM",
-        "Phase-field",
-        "Monte Carlo",
-        "CFD",
-        "AI/ML",
-        "Other"
-      ]
+      "title": "Which computational modelling and simulation approaches are represented?",
+      "help": "Select all that apply. Selecting Electronic-structure calculations reveals more detailed options.",
+      "type": "nestedmulti",
+      "options": {
+        "main": [
+          "Electronic-structure calculations",
+          "Atomistic Molecular Dynamics (MD)",
+          "Ab initio Molecular Dynamics (AIMD)",
+          "Monte Carlo methods",
+          "Coarse-grained / mesoscale modelling",
+          "Phase-field modelling",
+          "CALPHAD / thermodynamic modelling",
+          "Finite Element Methods (FEM)",
+          "Computational Fluid Dynamics (CFD)",
+          "Discrete Element Methods (DEM)",
+          "Multiscale modelling",
+          "Machine-learning / AI-based modelling",
+          "Other"
+        ],
+        "nested": {
+          "Electronic-structure calculations": [
+            "Density Functional Theory (DFT)",
+            "Wave-function-based methods",
+            "Green-function-based methods",
+            "Other electronic-structure methods"
+          ]
+        }
+      }
     },
     {
       "id": "s3q1",
@@ -351,8 +367,8 @@
       "id": "s4q1",
       "section": "Programmatic Access & Interfaces",
       "sectionIndex": 3,
-      "title": "Is programmatic data access available?",
-      "help": "Automatic software access.",
+      "title": "Can data or metadata be accessed automatically by software?",
+      "help": "For example, through an API or another machine-to-machine interface, rather than only through manual use of the website.",
       "type": "single",
       "options": [
         "Yes",

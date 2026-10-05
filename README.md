@@ -1,6 +1,6 @@
 # Materials Commons — Infrastructure Assessment Questionnaire
 
-Static, offline-first questionnaire adapted from the supplied CircSmeltSteel GitLab Pages project and the supplied `Infrastructure_assessment_questionare.xlsx`. This version is configured for **GitHub Pages**.
+Static, offline-first Materials Commons infrastructure assessment questionnaire based on the supplied `Infrastructure_assessment_questionare.xlsx`. This version is configured for **GitHub Pages**.
 
 ## What it does
 
@@ -12,10 +12,11 @@ Static, offline-first questionnaire adapted from the supplied CircSmeltSteel Git
 
 ## Publish with GitHub Pages
 
-1. Push to the `main` branch.
-2. In GitHub, open **Settings → Pages**. Under **Build and deployment → Source**, choose **GitHub Actions**.
-3. Open **Actions** and wait for `Deploy Materials Commons questionnaire to GitHub Pages` to complete.
-4. Return to **Settings → Pages** to open the published site URL.
+1. Create a GitHub repository and place all files from this folder at the repository root.
+2. Push to the `main` branch.
+3. In GitHub, open **Settings → Pages**. Under **Build and deployment → Source**, choose **GitHub Actions**.
+4. Open **Actions** and wait for `Deploy Materials Commons questionnaire to GitHub Pages` to complete.
+5. Return to **Settings → Pages** to open the published site URL.
 
 The workflow is `.github/workflows/pages.yml`. Unlike the reference project, no `.gitlab-ci.yml` is required.
 
