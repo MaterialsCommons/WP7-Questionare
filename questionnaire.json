@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -239,7 +239,7 @@
             "Density Functional Theory (DFT)",
             "Wave-function-based methods",
             "Green-function-based methods",
-            "Other electronic-structure methods"
+            "Other"
           ]
         }
       }
