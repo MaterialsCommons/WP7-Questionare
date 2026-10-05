@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=3',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v3';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
+const data=await (await fetch('questionnaire.json?v=4',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v4';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
 function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}
@@ -8,9 +8,20 @@ function multi(q,key,opts){const w=E('div'),bulk=E('div','bulk-select'),all=E('b
 function renderControl(q){const f=E('div');if(q.type==='text')f.append(text(q,'answer','Response'));else if(q.type==='url')f.append(text(q,'answer','URL','url'));else if(q.type==='textarea')f.append(text(q,'answer','Response','textarea'));else if(q.type==='single')f.append(radio(q,'answer',q.options));else if(q.type==='multi')f.append(multi(q,'selected',q.options));else if(q.type==='groupmulti'){for(const [g,opts] of Object.entries(q.options)){const fs=E('fieldset','groupbox'),lg=E('legend',null,g);fs.append(lg,multi(q,'selected-'+g,opts));f.append(fs)}}else if(q.type==='nestedmulti'){
 const mainWrap=E('div'),selected=[...val(q.id,'selected',[])],nestedBlocks={};
 const syncNested=()=>{for(const [parent,fs] of Object.entries(nestedBlocks)){fs.classList.toggle('hidden',!val(q.id,'selected',[]).includes(parent))}};
-q.options.main.forEach(o=>{const l=E('label','option'),i=E('input');i.type='checkbox';i.value=o;i.checked=selected.includes(o);i.onchange=()=>{let a=[...val(q.id,'selected',[])];if(i.checked&&!a.includes(o))a.push(o);if(!i.checked)a=a.filter(x=>x!==o);set(q.id,'selected',a);syncNested()};l.append(i,document.createTextNode(o));mainWrap.append(l)});
+q.options.main.forEach(o=>{
+  const l=E('label','option'),i=E('input');
+  i.type='checkbox';i.value=o;i.checked=selected.includes(o);
+  i.onchange=()=>{let a=[...val(q.id,'selected',[])];if(i.checked&&!a.includes(o))a.push(o);if(!i.checked)a=a.filter(x=>x!==o);set(q.id,'selected',a);syncNested()};
+  l.append(i,document.createTextNode(o));mainWrap.append(l);
+  const opts=(q.options.nested||{})[o];
+  if(opts){
+    const fs=E('fieldset','groupbox nested-options'),lg=E('legend',null,'Electronic-structure methods — select all that apply');
+    fs.append(lg,multi(q,'nested-'+o,opts));
+    nestedBlocks[o]=fs;
+    mainWrap.append(fs);
+  }
+});
 f.append(mainWrap);
-for(const [parent,opts] of Object.entries(q.options.nested||{})){const fs=E('fieldset','groupbox nested-options'),lg=E('legend',null,parent+' — select all that apply');fs.append(lg,multi(q,'nested-'+parent,opts));nestedBlocks[parent]=fs;f.append(fs)}
 syncNested()
 }else if(q.type==='contact'){f.append(radio(q,'status',q.options));const d=E('div','detail-grid');d.append(text(q,'contactName','Contact name'),text(q,'contactEmail','Contact email','email'));f.append(d)}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'))}else if(q.type==='scale'){const d=E('div','detail-grid');d.append(text(q,'records','Number of records / datasets / relevant objects'),text(q,'activeUsers','Number of active users'),text(q,'period','Reporting period'),text(q,'otherScale','Other scale information'));f.append(d)}else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
 function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');d.append(E('h3',null,(i+1)+'. '+q.title));if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);scrollTo({top:0,behavior:'smooth'})}
