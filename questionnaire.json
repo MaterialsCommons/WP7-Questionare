@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -62,23 +62,53 @@
       "id": "s1q5",
       "section": "Infrastructure & Governance",
       "sectionIndex": 0,
-      "title": "What services or capabilities does the infrastructure provide?",
+      "title": "Which data-related services does the infrastructure provide?",
       "help": "Select all that apply.",
       "type": "multi",
       "options": [
         "Data repository / data storage",
         "Data discovery / catalogue",
-        "Data sharing / publication",
+        "Data sharing",
         "Data integration / federation",
         "Knowledge graph / semantic data services",
-        "Data processing / analysis",
+        "Data curation / quality assurance",
+        "Other"
+      ],
+      "optionDescriptions": {
+        "Data repository / data storage": "Providing an environment for storing, managing, and accessing data.",
+        "Data discovery / catalogue": "Finding and identifying datasets through metadata, catalogues, or search tools.",
+        "Data sharing": "Making data accessible to others within a project or community.",
+        "Data integration / federation": "Connecting and providing access to data from multiple sources, systems, or repositories.",
+        "Knowledge graph / semantic data services": "Linking data and entities to represent relationships and enable semantic search or analysis.",
+        "Data curation / quality assurance": "Checking, validating, and improving data quality and consistency."
+      }
+    },
+    {
+      "id": "s1q5b",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "Which additional services or capabilities does the infrastructure provide?",
+      "help": "Beyond data management and access, select all that apply.",
+      "type": "multi",
+      "options": [
+        "Data processing / analysis tools",
         "Workflow execution",
         "Computational resources (HPC / cloud)",
         "Laboratory data management (ELN / LIMS)",
         "Experimental facility services",
         "Data visualization",
+        "Software tools / applications",
         "Other"
-      ]
+      ],
+      "optionDescriptions": {
+        "Data processing / analysis tools": "Processing, transforming, analysing, or interpreting data.",
+        "Workflow execution": "Running automated or predefined sequences of data-processing or analysis tasks.",
+        "Computational resources (HPC / cloud)": "Providing computing capacity for simulations, modelling, or data analysis.",
+        "Laboratory data management (ELN / LIMS)": "Managing laboratory data, samples, experiments, and related records.",
+        "Experimental facility services": "Providing access to experimental instruments, facilities, or measurements.",
+        "Data visualization": "Presenting data through graphs, interactive plots, or other visual representations.",
+        "Software tools / applications": "Providing software applications for scientific or technical tasks."
+      }
     },
     {
       "id": "s1q6",

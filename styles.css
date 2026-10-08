@@ -82,3 +82,6 @@
 
 /* Conditional detail options */
 .nested-options { margin-left: 1.5rem; border-left: 3px solid var(--teal, #217a79); }
+
+/* Descriptions for data-related and additional service options */
+.option-description{margin:-.15rem 0 .7rem 2rem;color:#526578;font-size:.88rem;line-height:1.45;max-width:65rem}

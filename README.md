@@ -44,3 +44,7 @@ The infrastructure name is collected in Question 1.
 
 The computational-modelling question uses a nested control: selecting **Electronic-structure calculations**
 reveals DFT, wave-function-based methods, Green-function-based methods, and other electronic-structure methods.
+
+## Version 7
+
+Infrastructure & Governance question 5 is split into data-related services and additional services. Each option has a short definition directly underneath. Existing answer storage key is retained to preserve drafts. The new question uses the distinct ID `s1q5b`.
