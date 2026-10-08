@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=7',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
+const data=await (await fetch('questionnaire.json?v=8',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
 function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}

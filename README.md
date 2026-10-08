@@ -48,3 +48,7 @@ reveals DFT, wave-function-based methods, Green-function-based methods, and othe
 ## Version 7
 
 Infrastructure & Governance question 5 is split into data-related services and additional services. Each option has a short definition directly underneath. Existing answer storage key is retained to preserve drafts. The new question uses the distinct ID `s1q5b`.
+
+## Version 8
+
+Replaced Experimental facility services with Automated / remotely accessible experimental facilities, including a definition covering self-driving laboratories.

@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -95,7 +95,7 @@
         "Workflow execution",
         "Computational resources (HPC / cloud)",
         "Laboratory data management (ELN / LIMS)",
-        "Experimental facility services",
+        "Automated / remotely accessible experimental facilities",
         "Data visualization",
         "Software tools / applications",
         "Other"
@@ -105,9 +105,9 @@
         "Workflow execution": "Running automated or predefined sequences of data-processing or analysis tasks.",
         "Computational resources (HPC / cloud)": "Providing computing capacity for simulations, modelling, or data analysis.",
         "Laboratory data management (ELN / LIMS)": "Managing laboratory data, samples, experiments, and related records.",
-        "Experimental facility services": "Providing access to experimental instruments, facilities, or measurements.",
         "Data visualization": "Presenting data through graphs, interactive plots, or other visual representations.",
-        "Software tools / applications": "Providing software applications for scientific or technical tasks."
+        "Software tools / applications": "Providing software applications for scientific or technical tasks.",
+        "Automated / remotely accessible experimental facilities": "Providing access to experimental equipment or laboratories that can be remotely controlled, programmatically triggered, or operated through automated workflows, including self-driving laboratories."
       }
     },
     {
