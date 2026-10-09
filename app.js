@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=11',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
+const data=await (await fetch('questionnaire.json?v=13',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
 function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}
@@ -29,7 +29,13 @@ function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('s
 data.sections.forEach((s,i)=>{const b=E('button',null,s);b.type='button';b.onclick=()=>{state.page=i;save();render()};nav.append(b)});document.querySelectorAll('[data-person]').forEach(i=>{const k=i.dataset.person;i.value=state.people[k]||'';i.oninput=()=>{state.people[k]=i.value;save()}});
 const intro=document.getElementById('intro');intro.className='intro';intro.append(E('h2','intro-title','Screening questionnaire'),E('p','intro-copy',data.scope));
 function result(){return {project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,answers:data.questions.map(q=>({questionId:q.id,section:q.section,question:q.title,response:state.answers[q.id]||{}}))}}
-function filename(ext){const n=(val('s1q1','answer','')||'infrastructure').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'')||'infrastructure';return 'materials-commons-assessment-'+n+'.'+ext}function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function filename(ext){const n=(val('s1q1','answer','')||'infrastructure').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'')||'infrastructure';return 'materials-commons-assessment-'+n+'.'+ext}function respondentArchiveName(){
+ const clean=value=>String(value||'').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-+|-+$/g,'').slice(0,70);
+ const person=clean(state.people.Name)||'unnamed-respondent';
+ const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+ return person+'-materials-commons-assessment-'+stamp+'.zip';
+}
+function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 // A single ZIP download avoids browser restrictions on multiple automatic downloads.
 function crc32(bytes){let crc=0xffffffff;for(const b of bytes){crc^=b;for(let k=0;k<8;k++)crc=(crc>>>1)^((crc&1)?0xedb88320:0)}return (crc^0xffffffff)>>>0}
 function zipFiles(files){
@@ -61,7 +67,7 @@ document.getElementById('saveBoth').onclick=async()=>{
    {name:filename('json'),bytes:new TextEncoder().encode(JSON.stringify(snapshot,null,2))},
    {name:filename('pdf'),bytes:new Uint8Array(await pdf.arrayBuffer())}
   ];
-  download(zipFiles(files),filename('zip'));
+  download(zipFiles(files),respondentArchiveName());
   status.textContent='Downloaded one ZIP containing both JSON and PDF. Extract both files and upload them to SharePoint.'+
    (sharepointWindow===null?' If SharePoint did not open, use the yellow link above.':'');
  }catch(err){status.textContent='Could not prepare the files: '+err.message}

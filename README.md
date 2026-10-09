@@ -64,3 +64,11 @@ A single export button requests JSON and PDF downloads and opens the SharePoint 
 ## Version 11
 
 Fixed unreliable double-download behavior. One click now downloads a single ZIP containing separate JSON and PDF files and opens SharePoint. Extract and upload both files.
+
+## Version 12
+
+The ZIP export filename includes the respondent's Name from Assessment information and a UTC timestamp. Names are sanitized for safe filenames; blank names use `unnamed-respondent`. This reduces accidental overwriting of uploaded assessments.
+
+## Version 13
+
+ZIP export filenames now start with the respondent name for easier alphabetical sorting.
