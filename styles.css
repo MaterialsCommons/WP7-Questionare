@@ -85,3 +85,5 @@
 
 /* Descriptions for data-related and additional service options */
 .option-description{margin:-.15rem 0 .7rem 2rem;color:#526578;font-size:.88rem;line-height:1.45;max-width:65rem}
+
+.sharepoint-open{display:inline-block;margin-top:.8rem;padding:.8rem 1rem;border-radius:.6rem;background:#164d75;color:#fff;font-weight:600;text-decoration:none}.sharepoint-open:hover,.sharepoint-open:focus{background:#0e3552;color:#fff}

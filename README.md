@@ -52,3 +52,7 @@ Infrastructure & Governance question 5 is split into data-related services and a
 ## Version 8
 
 Replaced Experimental facility services with Automated / remotely accessible experimental facilities, including a definition covering self-driving laboratories.
+
+## Version 9: SharePoint submission instructions
+
+Respondents download both JSON and PDF files, open the linked **Questionare Answers** SharePoint folder and upload both files manually. The site does not upload data automatically; SharePoint access permissions are required. The folder link appears in the preamble and the Save assessment area.
