@@ -56,3 +56,7 @@ Replaced Experimental facility services with Automated / remotely accessible exp
 ## Version 9: SharePoint submission instructions
 
 Respondents download both JSON and PDF files, open the linked **Questionare Answers** SharePoint folder and upload both files manually. The site does not upload data automatically; SharePoint access permissions are required. The folder link appears in the preamble and the Save assessment area.
+
+## Version 10
+
+A single export button requests JSON and PDF downloads and opens the SharePoint folder in a new tab. Respondents must manually upload both files. Browsers may require permission for multiple downloads or pop-ups. The SharePoint link in the preamble is yellow.

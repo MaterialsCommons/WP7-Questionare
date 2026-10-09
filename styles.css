@@ -87,3 +87,7 @@
 .option-description{margin:-.15rem 0 .7rem 2rem;color:#526578;font-size:.88rem;line-height:1.45;max-width:65rem}
 
 .sharepoint-open{display:inline-block;margin-top:.8rem;padding:.8rem 1rem;border-radius:.6rem;background:#164d75;color:#fff;font-weight:600;text-decoration:none}.sharepoint-open:hover,.sharepoint-open:focus{background:#0e3552;color:#fff}
+
+/* High-visibility SharePoint link in the preamble */
+.notice a.preamble-sharepoint-link{color:#ffdf63;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.notice a.preamble-sharepoint-link:hover,.notice a.preamble-sharepoint-link:focus-visible{color:#fff0a8}
