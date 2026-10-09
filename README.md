@@ -60,3 +60,7 @@ Respondents download both JSON and PDF files, open the linked **Questionare Answ
 ## Version 10
 
 A single export button requests JSON and PDF downloads and opens the SharePoint folder in a new tab. Respondents must manually upload both files. Browsers may require permission for multiple downloads or pop-ups. The SharePoint link in the preamble is yellow.
+
+## Version 11
+
+Fixed unreliable double-download behavior. One click now downloads a single ZIP containing separate JSON and PDF files and opens SharePoint. Extract and upload both files.
