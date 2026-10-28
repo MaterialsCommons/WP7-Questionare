@@ -2,7 +2,7 @@ name: Deploy both questionnaire branches to GitHub Pages
 
 on:
   push:
-    branches: [main, experimental]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
