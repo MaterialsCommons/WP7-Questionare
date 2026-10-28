@@ -8,7 +8,16 @@ const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
 const get=q=>state.answers[q.id]||{},put=(q,key,value)=>{state.answers[q.id]??={};state.answers[q.id][key]=value;save()};
 function control(q){const box=E('div');if(q.type==='text'||q.type==='textarea'){const input=E(q.type==='textarea'?'textarea':'input');if(q.type==='text')input.type='text';input.value=get(q).answer||'';input.oninput=()=>put(q,'answer',input.value);box.append(input)}
 else for(const option of q.options||[]){const label=E('label','option'),input=E('input');input.type=q.type==='multi'?'checkbox':'radio';input.name=q.id;input.value=option;input.checked=q.type==='multi'?(get(q).selected||[]).includes(option):get(q).answer===option;input.onchange=()=>{if(q.type==='multi'){const old=get(q).selected||[];put(q,'selected',input.checked?[...new Set([...old,option])]:old.filter(v=>v!==option))}else put(q,'answer',option)};label.append(input,document.createTextNode(option));box.append(label)}return box}
-function render(){const sec=data.sections[state.page];$('survey').replaceChildren();const group=E('section');group.append(E('h2',null,sec));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const item=E('div','assessment-question');item.append(E('h3',null,(i+1)+'. '+q.title),control(q));group.append(item)});$('survey').append(group);[...$('nav').children].forEach((b,i)=>b.classList.toggle('active',i===state.page));$('progressFill').style.width=(100*(state.page+1)/data.sections.length)+'%';$('prev').disabled=state.page===0;$('next').classList.toggle('hidden',state.page===data.sections.length-1);$('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1)}
+function render(){const sec=data.sections[state.page];$('survey').replaceChildren();const group=E('section');group.append(E('h2',null,sec));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const item=E('div','assessment-question');item.append(E('h3',null,(i+1)+'. '+q.title),control(q));group.append(item)});$('survey').append(group);[...$('nav').children].forEach((b,i)=>b.classList.toggle('active',i===state.page));$('progressFill').style.width=(100*(state.page+1)/data.sections.length)+'%';$('prev').disabled=state.page===0;$('next').classList.toggle('hidden',state.page===data.sections.length-1);$('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);
+requestAnimationFrame(() => {
+  if (state.page === 0) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    const top = nav.getBoundingClientRect().top + window.scrollY - 20;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+});
+}
 data.sections.forEach((sec,i)=>{const b=E('button',null,sec);b.type='button';b.onclick=()=>{state.page=i;save();render()};$('nav').append(b)});
 document.querySelectorAll('[data-person]').forEach(el=>{const key=el.dataset.person;el.value=state.people[key]||'';el.oninput=()=>{state.people[key]=el.value;save()}});
 $('intro').append(E('h2',null,'About this assessment'),E('p',null,data.scope));
