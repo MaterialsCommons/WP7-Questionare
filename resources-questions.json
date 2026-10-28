@@ -1,0 +1,197 @@
+{
+  "project": "Materials Commons",
+  "version": "experimental-draft-1",
+  "title": "Tools & Interoperability Resources",
+  "scope": "Describe reusable tools, workflows, interfaces, protocols, ontologies, or semantic resources for Materials Commons",
+  "sections": [
+    "Resource identification",
+    "Purpose & applicability",
+    "Implementation & interoperability",
+    "Quality & availability",
+    "Materials Commons contribution"
+  ],
+  "sectionPurposes": {},
+  "questions": [
+    {
+      "id": "resources-1-1",
+      "section": "Resource identification",
+      "title": "Resource name",
+      "type": "text"
+    },
+    {
+      "id": "resources-1-2",
+      "section": "Resource identification",
+      "title": "Primary resource type",
+      "type": "single",
+      "options": [
+        "Software tool",
+        "Workflow or pipeline",
+        "Interface or connector",
+        "Protocol or specification",
+        "Ontology or semantic resource",
+        "Other"
+      ]
+    },
+    {
+      "id": "resources-1-3",
+      "section": "Resource identification",
+      "title": "Additional applicable resource types",
+      "type": "multi",
+      "options": [
+        "Software tool",
+        "Workflow or pipeline",
+        "Interface or connector",
+        "Protocol or specification",
+        "Ontology or semantic resource",
+        "Other"
+      ]
+    },
+    {
+      "id": "resources-1-4",
+      "section": "Resource identification",
+      "title": "Owner, contact, and organization",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-1-5",
+      "section": "Resource identification",
+      "title": "Project website, repository, or documentation URL",
+      "type": "text"
+    },
+    {
+      "id": "resources-2-1",
+      "section": "Purpose & applicability",
+      "title": "What problem does this resource solve?",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-2-2",
+      "section": "Purpose & applicability",
+      "title": "Materials science use cases and scientific domains",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-2-3",
+      "section": "Purpose & applicability",
+      "title": "Capabilities",
+      "type": "multi",
+      "options": [
+        "Publication data extraction",
+        "Data processing or conversion",
+        "Metadata enrichment",
+        "Federated learning",
+        "Distributed analytics",
+        "Machine learning",
+        "Search and knowledge graphs",
+        "Simulation or experiment integration",
+        "Validation and provenance",
+        "Visualization",
+        "Semantic interoperability",
+        "Other"
+      ]
+    },
+    {
+      "id": "resources-2-4",
+      "section": "Purpose & applicability",
+      "title": "Inputs, outputs, and supported formats",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-3-1",
+      "section": "Implementation & interoperability",
+      "title": "How is the resource accessed or deployed?",
+      "type": "multi",
+      "options": [
+        "Web application",
+        "API",
+        "Command-line tool",
+        "Library or SDK",
+        "Container",
+        "Desktop application",
+        "Specification only",
+        "Other"
+      ]
+    },
+    {
+      "id": "resources-3-2",
+      "section": "Implementation & interoperability",
+      "title": "Dependencies, standards, protocols, schemas, and related ontologies",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-3-3",
+      "section": "Implementation & interoperability",
+      "title": "Integration requirements and available interfaces",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-3-4",
+      "section": "Implementation & interoperability",
+      "title": "Privacy, security, identity, and data locality considerations",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-4-1",
+      "section": "Quality & availability",
+      "title": "Development maturity",
+      "type": "single",
+      "options": [
+        "Concept",
+        "Prototype",
+        "Research software",
+        "Pilot deployment",
+        "Production",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "resources-4-2",
+      "section": "Quality & availability",
+      "title": "License and reuse conditions",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-4-3",
+      "section": "Quality & availability",
+      "title": "Documentation, examples, tests, and validation evidence",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-4-4",
+      "section": "Quality & availability",
+      "title": "Known limitations and maintenance plans",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-5-1",
+      "section": "Materials Commons contribution",
+      "title": "Availability for reuse or collaboration",
+      "type": "single",
+      "options": [
+        "Available now",
+        "Available with conditions",
+        "Under development",
+        "Not currently available",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "resources-5-2",
+      "section": "Materials Commons contribution",
+      "title": "Potential contribution to Materials Commons",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-5-3",
+      "section": "Materials Commons contribution",
+      "title": "Support required for integration",
+      "type": "textarea"
+    },
+    {
+      "id": "resources-5-4",
+      "section": "Materials Commons contribution",
+      "title": "Related datasets, infrastructures, or other resources",
+      "type": "textarea"
+    }
+  ]
+}

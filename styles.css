@@ -91,3 +91,5 @@
 /* High-visibility SharePoint link in the preamble */
 .notice a.preamble-sharepoint-link{color:#ffdf63;font-weight:750;text-decoration:underline;text-underline-offset:3px}
 .notice a.preamble-sharepoint-link:hover,.notice a.preamble-sharepoint-link:focus-visible{color:#fff0a8}
+
+.assessment-pathways{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}.assessment-pathways a{padding:11px 14px;border:1px solid #afbfcb;border-radius:10px;text-decoration:none;color:#153e57;background:#f1f5f8;font-weight:700}.assessment-pathways a[aria-current="page"]{background:#153e57;color:white}.assessment-pathways a:focus-visible{outline:3px solid #167e7a}.assessment-question{margin:24px 0;padding-bottom:18px;border-bottom:1px solid #d9e4eb}.assessment-question h3{font-size:17px}.assessment-question .option{display:block;padding:8px 4px;font-weight:400}.assessment-question .option input{margin-right:8px}.assessment-question textarea{min-height:105px}.assessment-question input[type=text]{width:100%}

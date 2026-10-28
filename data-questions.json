@@ -1,0 +1,174 @@
+{
+  "project": "Materials Commons",
+  "version": "experimental-draft-1",
+  "title": "Data & Datasets",
+  "scope": "Describe materials datasets that could be shared with Materials Commons, whether or not you operate infrastructure",
+  "sections": [
+    "Provider & scope",
+    "Data characteristics",
+    "Metadata & quality",
+    "Access & reuse",
+    "Contribution readiness"
+  ],
+  "sectionPurposes": {},
+  "questions": [
+    {
+      "id": "data-1-1",
+      "section": "Provider & scope",
+      "title": "Dataset or collection name",
+      "type": "text"
+    },
+    {
+      "id": "data-1-2",
+      "section": "Provider & scope",
+      "title": "Scientific domain and materials systems",
+      "type": "textarea"
+    },
+    {
+      "id": "data-1-3",
+      "section": "Provider & scope",
+      "title": "Data provider and responsible contact",
+      "type": "textarea"
+    },
+    {
+      "id": "data-1-4",
+      "section": "Provider & scope",
+      "title": "Dataset description and intended use",
+      "type": "textarea"
+    },
+    {
+      "id": "data-2-1",
+      "section": "Data characteristics",
+      "title": "Data categories",
+      "type": "multi",
+      "options": [
+        "Experimental measurements",
+        "Characterization",
+        "Simulation",
+        "Computational predictions",
+        "Images and microscopy",
+        "Spectroscopy",
+        "Literature-derived",
+        "Other"
+      ]
+    },
+    {
+      "id": "data-2-2",
+      "section": "Data characteristics",
+      "title": "Approximate size, number of records, and update frequency",
+      "type": "textarea"
+    },
+    {
+      "id": "data-2-3",
+      "section": "Data characteristics",
+      "title": "File formats and organization",
+      "type": "textarea"
+    },
+    {
+      "id": "data-2-4",
+      "section": "Data characteristics",
+      "title": "How were the data generated or collected?",
+      "type": "textarea"
+    },
+    {
+      "id": "data-3-1",
+      "section": "Metadata & quality",
+      "title": "Available metadata, identifiers, and standards",
+      "type": "textarea"
+    },
+    {
+      "id": "data-3-2",
+      "section": "Metadata & quality",
+      "title": "Provenance, methods, instruments, software, and conditions",
+      "type": "textarea"
+    },
+    {
+      "id": "data-3-3",
+      "section": "Metadata & quality",
+      "title": "Quality assurance, uncertainty, and completeness",
+      "type": "textarea"
+    },
+    {
+      "id": "data-3-4",
+      "section": "Metadata & quality",
+      "title": "Are units, variables, and materials identifiers documented?",
+      "type": "single",
+      "options": [
+        "Yes",
+        "Partially",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "data-4-1",
+      "section": "Access & reuse",
+      "title": "Current storage or access location (URL if available)",
+      "type": "text"
+    },
+    {
+      "id": "data-4-2",
+      "section": "Access & reuse",
+      "title": "Sharing status",
+      "type": "single",
+      "options": [
+        "Public",
+        "Available on request",
+        "Restricted",
+        "Not yet shared",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "data-4-3",
+      "section": "Access & reuse",
+      "title": "License, intellectual property, and legal restrictions",
+      "type": "textarea"
+    },
+    {
+      "id": "data-4-4",
+      "section": "Access & reuse",
+      "title": "Sensitive, confidential, or personal data considerations",
+      "type": "textarea"
+    },
+    {
+      "id": "data-5-1",
+      "section": "Contribution readiness",
+      "title": "Willingness to contribute to Materials Commons",
+      "type": "single",
+      "options": [
+        "Yes",
+        "Possibly, subject to conditions",
+        "No",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "data-5-2",
+      "section": "Contribution readiness",
+      "title": "Support needed for publication, curation, or interoperability",
+      "type": "multi",
+      "options": [
+        "Metadata support",
+        "Format conversion",
+        "Licensing guidance",
+        "Anonymization or access control",
+        "Repository hosting",
+        "Quality validation",
+        "Other"
+      ]
+    },
+    {
+      "id": "data-5-3",
+      "section": "Contribution readiness",
+      "title": "Estimated timeline and main barriers",
+      "type": "textarea"
+    },
+    {
+      "id": "data-5-4",
+      "section": "Contribution readiness",
+      "title": "Related tools, ontologies, workflows, or infrastructures",
+      "type": "textarea"
+    }
+  ]
+}
