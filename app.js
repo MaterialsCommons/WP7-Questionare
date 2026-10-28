@@ -27,7 +27,11 @@ syncNested()
 }else if(q.type==='contact'){f.append(radio(q,'status',q.options));const d=E('div','detail-grid');d.append(text(q,'contactName','Contact name'),text(q,'contactEmail','Contact email','email'));f.append(d)}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'))}else if(q.type==='scale'){const d=E('div','detail-grid');d.append(text(q,'records','Number of records / datasets / relevant objects'),text(q,'activeUsers','Number of active users'),text(q,'period','Reporting period'),text(q,'otherScale','Other scale information'));f.append(d)}else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
 function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');d.append(E('h3',null,(i+1)+'. '+q.title));if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);
 requestAnimationFrame(() => {
-  const top = survey.getBoundingClientRect().top + window.scrollY - 20;
+  const target = state.page === 0
+    ? document.getElementById('intro')
+    : nav;
+
+  const top = target.getBoundingClientRect().top + window.scrollY - 20;
 
   window.scrollTo({
     top: Math.max(0, top),
