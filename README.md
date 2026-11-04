@@ -79,5 +79,3 @@ ZIP export filenames now start with the respondent name for easier alphabetical 
 ### Production version (Version 13)
 [Open production questionnaire](https://materialscommons.github.io/WP7-Questionare/)
 
-### Experimental version
-[Open experimental questionnaire](https://materialscommons.github.io/WP7-Questionare/experimental/)
