@@ -1,4 +1,5 @@
-name: Deploy both questionnaire branches to GitHub Pages
+
+name: Deploy main questionnaire to GitHub Pages
 
 on:
   push:
@@ -20,31 +21,21 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Checkout production
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
-          path: production
-      - name: Checkout experimental
-        uses: actions/checkout@v4
-        with:
-          ref: experimental
-          path: experimental
-      - name: Assemble both websites
-        run: |
-          mkdir -p public/experimental
-          cp -a production/. public/
-          rm -rf public/.git public/.github
-          cp -a experimental/. public/experimental/
-          rm -rf public/experimental/.git public/experimental/.github
-          touch public/.nojekyll
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Upload static site
+
+      - name: Upload main questionnaire
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: .
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
