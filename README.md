@@ -45,3 +45,33 @@ Test locally using `python -m http.server 8000`, and review the new questions, J
 
 ## Submission instructions
 Respondents must download the ZIP and upload the ZIP itself to the designated SharePoint folder. Downloading does not submit responses. These instructions appear at the beginning and end of the questionnaire and in the download confirmation.
+
+
+## Version 17 — Awesome MaterialsCommons Resources
+- A prominent sixth tab, **★ Community Resources**, is separate from the five infrastructure-specific sections.
+- Collect community resources in seven categories: Infrastructures, Dataspaces, Tools, Workflows, Interfaces, Protocols, Ontologies.
+- Each category supports any number of free-form entries with **Name**, **Purpose / short description**, and **Link to repository or website**.
+- This tab is optional, does not depend on the currently selected infrastructure, and persists across infrastructure switching.
+- Entries are saved locally with the assessment and included once in the ZIP as `community-resources.json` and `community-resources.pdf`, alongside one JSON and PDF per infrastructure.
+- Respondents must still upload the downloaded ZIP to the existing SharePoint folder; downloading alone does not submit it.
+- Existing Version 16 local drafts migrate automatically, with no change to the storage key.
+
+## Version 17 layout revision
+- The community resources collection is **not** a sixth tab. All five infrastructure questionnaire tabs remain unchanged.
+- The green community resources introduction box has been moved from the preamble to the end of the fifth section, immediately before the download area.
+- The editable community resource categories (name, purpose, link, with add/remove controls) appear in the same box, before the download button.
+- Entries are shared across infrastructures and included in the same JSON/PDF export files as before.
+
+## Version 17 layout refinement
+- The community resources panel is collapsed by default and expands when its header is clicked.
+- Each category shows a **+ Add** button; entry fields appear only after a resource is added.
+- An **Other** category allows suggestions that do not fit the seven named categories.
+- Resources remain independent of infrastructure and are included in the combined export.
+
+## Infrastructure selection guidance
+The infrastructure selector explains that all five sections are completed per infrastructure, answers are saved separately, and the dropdown label updates from Section 1, Question 1. The first question is retained to avoid changing existing response data and exports.
+
+## Infrastructure naming (Version 17 refinement)
+Infrastructure names are entered in the green Infrastructures selector panel, not as Section 1 Question 1. The dropdown updates live. Existing saved answers to the former Question 1 are migrated into the infrastructure name field; infrastructure exports continue to include the name.
+
+Version 17: The optional community resources disclosure now has a prominent circular arrow that rotates when expanded and an explicit expand/collapse label.

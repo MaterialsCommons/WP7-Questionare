@@ -1,5 +1,5 @@
 {
-  "version": 16,
+  "version": 17,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -18,15 +18,6 @@
     "Interoperability & Reuse": "Assess converters and technical documentation."
   },
   "questions": [
-    {
-      "id": "s1q1",
-      "section": "Infrastructure & Governance",
-      "sectionIndex": 0,
-      "title": "What is the name of the infrastructure?",
-      "help": "Official name.",
-      "type": "text",
-      "options": null
-    },
     {
       "id": "s1q2",
       "section": "Infrastructure & Governance",

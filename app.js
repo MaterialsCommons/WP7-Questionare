@@ -1,35 +1,40 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=16',{cache:'no-store'})).json();
+const data=await (await fetch('questionnaire.json?v=17',{cache:'no-store'})).json();
 const KEY='materials-commons-infrastructure-assessment-v6';
-let state={people:{},infrastructures:[],activeInfrastructureId:null,page:0,answers:{}};
+let state={people:{},infrastructures:[],activeInfrastructureId:null,page:0,answers:{},resources:{},resourcesTab:false};
 try{const stored=JSON.parse(localStorage.getItem(KEY)||'null');if(stored)state={...state,...stored}}catch{}
 const newId=()=>('infra-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9));
 if(!Array.isArray(state.infrastructures))state.infrastructures=[];
+if(!state.resources||typeof state.resources!=='object'||Array.isArray(state.resources))state.resources={};
+state.resourcesTab=Boolean(state.resourcesTab);
 if(!state.infrastructures.length)state.infrastructures=[{id:newId(),answers:state.answers&&typeof state.answers==='object'?state.answers:{},page:Number.isInteger(state.page)?state.page:0}];
+state.infrastructures.forEach(infra=>{if(typeof infra.name!=='string')infra.name=String(infra.answers?.s1q1?.answer||'')});
 if(!state.infrastructures.some(x=>x.id===state.activeInfrastructureId))state.activeInfrastructureId=state.infrastructures[0].id;
 let current=state.infrastructures.find(x=>x.id===state.activeInfrastructureId);
 state.answers=current.answers||{};state.page=current.page||0;
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
-const save=()=>{current.answers=state.answers;current.page=state.page;state.activeInfrastructureId=current.id;localStorage.setItem(KEY,JSON.stringify({people:state.people,infrastructures:state.infrastructures,activeInfrastructureId:current.id}))};
+const save=()=>{current.answers=state.answers;current.page=state.page;state.activeInfrastructureId=current.id;localStorage.setItem(KEY,JSON.stringify({people:state.people,infrastructures:state.infrastructures,activeInfrastructureId:current.id,resources:state.resources,resourcesTab:state.resourcesTab}))};
 const survey=document.getElementById('survey'),nav=document.getElementById('nav');
-function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save();if(id==='s1q1'&&k==='answer')renderInfrastructureSelector()}
+function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save();}
 function val(id,k,d=''){return state.answers[id]?.[k]??d}
-function infraName(infra,index){return infra.answers?.s1q1?.answer?.trim()||'Infrastructure '+(index+1)}
+function infraName(infra,index){return String(infra.name||infra.answers?.s1q1?.answer||'').trim()||'Infrastructure '+(index+1)}
 function renderInfrastructureSelector(){
  const select=document.getElementById('infrastructureSelect');select.replaceChildren();
  state.infrastructures.forEach((infra,i)=>{const o=E('option',null,infraName(infra,i));o.value=infra.id;select.append(o)});
  select.value=current.id;
+ document.getElementById('infrastructureName').value=current.name||'';
  document.getElementById('removeInfrastructure').disabled=state.infrastructures.length===1;
  document.getElementById('infrastructureCount').textContent=state.infrastructures.length+' infrastructure'+(state.infrastructures.length===1?'':'s')+' in this assessment';
 }
 function switchInfrastructure(id){
  const target=state.infrastructures.find(x=>x.id===id);if(!target||target===current)return;
- save();current=target;state.answers=current.answers||{};state.page=current.page||0;save();renderInfrastructureSelector();render();
+ save();current=target;state.answers=current.answers||{};state.page=current.page||0;state.resourcesTab=false;save();renderInfrastructureSelector();render();
 }
 document.getElementById('infrastructureSelect').onchange=e=>switchInfrastructure(e.target.value);
+document.getElementById('infrastructureName').oninput=e=>{current.name=e.target.value;save();renderInfrastructureSelector()};
 document.getElementById('addInfrastructure').onclick=()=>{
- save();const infra={id:newId(),answers:{},page:0};state.infrastructures.push(infra);
- current=infra;state.answers=infra.answers;state.page=0;save();renderInfrastructureSelector();render();
+ save();const infra={id:newId(),name:'',answers:{},page:0};state.infrastructures.push(infra);
+ current=infra;state.answers=infra.answers;state.page=0;state.resourcesTab=false;save();renderInfrastructureSelector();render();
 };
 document.getElementById('removeInfrastructure').onclick=()=>{
  if(state.infrastructures.length<2)return;
@@ -170,15 +175,61 @@ syncNested()
  add.onclick=()=>{urls.push('');set(q.id,'urls',[...urls]);redraw()};
  wrap.append(add);redraw();f.append(wrap)
 }else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
-function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');const heading=E('h3');
+const RESOURCE_CATEGORIES=['Infrastructures','Dataspaces','Tools','Workflows','Interfaces','Protocols','Ontologies','Other'];
+function resourceEntries(){return RESOURCE_CATEGORIES.flatMap(category=>(state.resources[category]||[]).filter(entry=>Object.values(entry).some(v=>String(v||'').trim())).map(entry=>({category,name:entry.name||'',purpose:entry.purpose||'',link:entry.link||''})))}
+function renderResources(){
+ const section=E('section','resource-view');
+ section.append(E('p','resource-lead','We want to identify and track resources that already exist and are available to the MaterialsCommons community, such as infrastructures, dataspaces, tools, workflows, interfaces, protocols and ontologies. By sharing their names, purposes and links, you help us build an initial overview of what the community can already use, find opportunities for reuse and collaboration, and avoid overlooking existing work. This is not intended to be a complete or strictly structured catalogue. Please focus on existing resources rather than ideas for future developments. These suggestions are independent of any individual infrastructure in your assessment.'));
+ section.append(E('p','resource-hint','Choose a category and click + to add a resource. Only categories you use will display entry fields. For each resource, enter its name, purpose and repository or website link.'));
+ for(const category of RESOURCE_CATEGORIES){
+  const group=E('section','resource-category'),header=E('div','resource-category-header'),title=E('h3',null,category),items=E('div','resource-entries');
+  const count=E('span','resource-count');
+  const add=E('button','secondary small-action resource-add','+ Add '+(category==='Other'?'other resource':category.toLowerCase().replace(/s$/,'')+' resource'));
+  add.type='button';
+  header.append(title,count,add);group.append(header,items);
+  const draw=()=>{
+   items.replaceChildren();
+   const entries=state.resources[category]||[];
+   count.textContent=entries.length?entries.length+' added':'';
+   entries.forEach((entry,index)=>{
+    const card=E('fieldset','resource-entry'),legend=E('legend',null,category+' '+(index+1));card.append(legend);
+    for(const [key,label,kind] of [['name','Name','text'],['purpose','Purpose / short description','textarea'],['link','Link to repository or website','url']]){
+     const wrapper=E('label','resource-field',label),input=E(kind==='textarea'?'textarea':'input');
+     if(kind!=='textarea')input.type=kind;
+     input.value=entry[key]||'';input.placeholder=key==='link'?'https://…':key==='purpose'?'What is it used for?':'';
+     input.oninput=()=>{entry[key]=input.value;save()};wrapper.append(input);card.append(wrapper);
+    }
+    const remove=E('button','secondary small-action','Remove resource');remove.type='button';
+    remove.onclick=()=>{state.resources[category].splice(index,1);save();draw()};card.append(remove);items.append(card);
+   });
+  };
+  add.onclick=()=>{state.resources[category]??=[];state.resources[category].push({name:'',purpose:'',link:''});save();draw();items.lastElementChild?.querySelector('input')?.focus()};
+  section.append(group);draw();
+ }
+ document.getElementById('resourceContainer').replaceChildren(section);
+}
+function render(){survey.innerHTML='';
+ state.resourcesTab=false;
+ renderQuestions();
+ [...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));
+ document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';
+ document.getElementById('prev').disabled=state.page===0;
+ document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);
+ const atEnd=state.page===data.sections.length-1;
+ document.getElementById('exportActions').classList.toggle('hidden',!atEnd);
+ if(atEnd)renderResources();
+ scrollTo({top:0,behavior:'smooth'});
+}
+function renderQuestions(){const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');const heading=E('h3');
  if(q.id==='s1q8'){
   heading.append(document.createTextNode((i+1)+'. Is the infrastructure willing to join the '));
   const link=E('a',null,'Materials Commons federation');
   link.href='https://www.materialscommons.eu/';link.target='_blank';link.rel='noopener noreferrer';
   heading.append(link,document.createTextNode('?'));
  }else heading.textContent=(i+1)+'. '+q.title;
- d.append(heading);if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);scrollTo({top:0,behavior:'smooth'})}
-data.sections.forEach((s,i)=>{const b=E('button',null,s);b.type='button';b.onclick=()=>{state.page=i;save();render()};nav.append(b)});document.querySelectorAll('[data-person]').forEach(i=>{const k=i.dataset.person;i.value=state.people[k]||'';i.oninput=()=>{state.people[k]=i.value;save()}});
+ d.append(heading);if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h)}
+data.sections.forEach((s,i)=>{const b=E('button',null,s);b.type='button';b.onclick=()=>{state.resourcesTab=false;state.page=i;save();render()};nav.append(b)});
+document.querySelectorAll('[data-person]').forEach(i=>{const k=i.dataset.person;i.value=state.people[k]||'';i.oninput=()=>{state.people[k]=i.value;save()}});
 const intro=document.getElementById('intro');intro.className='intro';intro.append(E('h2','intro-title','Screening questionnaire'),E('p','intro-copy',data.scope));
 function result(infra){return {project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,infrastructure:infraName(infra,state.infrastructures.indexOf(infra)),answers:data.questions.map(q=>({questionId:q.id,section:q.section,question:q.title,response:infra.answers?.[q.id]||{}}))}}
 function safeName(v){return String(v||'infrastructure').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'').slice(0,70)||'infrastructure'}
@@ -211,7 +262,7 @@ document.getElementById('saveBoth').onclick=async()=>{
  const folder=document.querySelector('.preamble-sharepoint-link').href;
  const button=document.getElementById('saveBoth');
  button.disabled=true;save();
- status.textContent='Preparing JSON and PDF for '+state.infrastructures.length+' infrastructure(s)…';
+ status.textContent='Preparing infrastructure answers and community resources for download…';
  const sharepointWindow=window.open(folder,'_blank');if(sharepointWindow)sharepointWindow.opener=null;
  try{
   const files=[],encoder=new TextEncoder();
@@ -221,9 +272,14 @@ document.getElementById('saveBoth').onclick=async()=>{
    const pdf=window.MaterialsCommonsPDF.makePdf(snapshot);
    files.push({name:filename(infra,index,'pdf'),bytes:new Uint8Array(await pdf.arrayBuffer())});
   }
+  const sharedResources={project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,title:'Awesome MaterialsCommons Resources',description:'Community-suggested resources, independent of any infrastructure',resources:RESOURCE_CATEGORIES.map(category=>({category,entries:(state.resources[category]||[]).filter(entry=>Object.values(entry).some(v=>String(v||'').trim()))}))};
+  files.push({name:'community-resources.json',bytes:encoder.encode(JSON.stringify(sharedResources,null,2))});
+  const resourcePdfResult={version:data.version,assessment:state.people,answers:sharedResources.resources.map(({category,entries})=>({section:'Awesome MaterialsCommons Resources',question:category,questionId:'resource-'+category.toLowerCase(),response:entries.length?{entries:entries.map(e=>({Name:e.name||'',Purpose:e.purpose||'',Link:e.link||''}))}:{}}))};
+  const resourcePdf=window.MaterialsCommonsPDF.makePdf(resourcePdfResult);
+  files.push({name:'community-resources.pdf',bytes:new Uint8Array(await resourcePdf.arrayBuffer())});
   download(zipFiles(files),respondentArchiveName());
-  status.textContent='ZIP downloaded with '+files.length+' files (JSON and PDF for each infrastructure). IMPORTANT: Your assessment has NOT been submitted yet. Upload the downloaded ZIP file to the SharePoint folder to complete submission.'+(sharepointWindow===null?' If SharePoint did not open, use the link above.':'');
+  status.textContent='ZIP downloaded with '+files.length+' files (JSON and PDF for each infrastructure, plus community resources JSON and PDF). IMPORTANT: Your assessment has NOT been submitted yet. Upload the downloaded ZIP file to the SharePoint folder to complete submission.'+(sharepointWindow===null?' If SharePoint did not open, use the link above.':'');
  }catch(err){status.textContent='Could not prepare the files: '+err.message}
  finally{button.disabled=false}
 };
-document.getElementById('prev').onclick=()=>{if(state.page>0){state.page--;save();render()}};document.getElementById('next').onclick=()=>{if(state.page<data.sections.length-1){state.page++;save();render()}};document.getElementById('clear').onclick=()=>{if(confirm('Clear all locally saved answers for this assessment?')){localStorage.removeItem(KEY);location.reload()}};renderInfrastructureSelector();render();})();
+document.getElementById('prev').onclick=()=>{if(state.page>0){state.page--;save();render()}};document.getElementById('next').onclick=()=>{if(!state.resourcesTab&&state.page<data.sections.length-1){state.page++;save();render()}};document.getElementById('clear').onclick=()=>{if(confirm('Clear all locally saved answers for this assessment?')){localStorage.removeItem(KEY);location.reload()}};renderInfrastructureSelector();render();})();
