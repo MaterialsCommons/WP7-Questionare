@@ -102,3 +102,17 @@
 /* Version 15: contextual follow-up questions */
 .hpc-details,.conditional-details{margin-top:14px}
 .hpc-details .groupbox,.conditional-details .groupbox{margin-top:10px}
+
+/* Version 16: multiple infrastructure selector */
+.infrastructure-switcher{margin:18px 0;padding:18px;border:1px solid #d8e5e9;border-radius:12px;background:#eef7f5}
+.infrastructure-switcher h2{margin-top:0}
+.infrastructure-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.infrastructure-controls label{font-weight:600}
+.infrastructure-controls select{flex:1 1 200px;min-width:180px;padding:10px;border:1px solid #9eb8c2;border-radius:7px;background:white;color:#203448}
+.infrastructure-controls button{white-space:normal}
+
+/* Version 16: explicit manual submission instructions */
+.submission-notice ol,.submission-steps ol{margin:10px 0 12px;padding-left:1.5rem}
+.submission-notice li,.submission-steps li{margin:7px 0}
+.submission-steps{margin:12px 0;padding:16px;border:2px solid #357c79;border-radius:10px;background:#f0f9f7;line-height:1.5}
+#exportStatus:not(:empty){font-weight:600;line-height:1.6}

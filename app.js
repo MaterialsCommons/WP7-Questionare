@@ -1,7 +1,43 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=15',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
-const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
-function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
+const data=await (await fetch('questionnaire.json?v=16',{cache:'no-store'})).json();
+const KEY='materials-commons-infrastructure-assessment-v6';
+let state={people:{},infrastructures:[],activeInfrastructureId:null,page:0,answers:{}};
+try{const stored=JSON.parse(localStorage.getItem(KEY)||'null');if(stored)state={...state,...stored}}catch{}
+const newId=()=>('infra-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9));
+if(!Array.isArray(state.infrastructures))state.infrastructures=[];
+if(!state.infrastructures.length)state.infrastructures=[{id:newId(),answers:state.answers&&typeof state.answers==='object'?state.answers:{},page:Number.isInteger(state.page)?state.page:0}];
+if(!state.infrastructures.some(x=>x.id===state.activeInfrastructureId))state.activeInfrastructureId=state.infrastructures[0].id;
+let current=state.infrastructures.find(x=>x.id===state.activeInfrastructureId);
+state.answers=current.answers||{};state.page=current.page||0;
+const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
+const save=()=>{current.answers=state.answers;current.page=state.page;state.activeInfrastructureId=current.id;localStorage.setItem(KEY,JSON.stringify({people:state.people,infrastructures:state.infrastructures,activeInfrastructureId:current.id}))};
+const survey=document.getElementById('survey'),nav=document.getElementById('nav');
+function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save();if(id==='s1q1'&&k==='answer')renderInfrastructureSelector()}
+function val(id,k,d=''){return state.answers[id]?.[k]??d}
+function infraName(infra,index){return infra.answers?.s1q1?.answer?.trim()||'Infrastructure '+(index+1)}
+function renderInfrastructureSelector(){
+ const select=document.getElementById('infrastructureSelect');select.replaceChildren();
+ state.infrastructures.forEach((infra,i)=>{const o=E('option',null,infraName(infra,i));o.value=infra.id;select.append(o)});
+ select.value=current.id;
+ document.getElementById('removeInfrastructure').disabled=state.infrastructures.length===1;
+ document.getElementById('infrastructureCount').textContent=state.infrastructures.length+' infrastructure'+(state.infrastructures.length===1?'':'s')+' in this assessment';
+}
+function switchInfrastructure(id){
+ const target=state.infrastructures.find(x=>x.id===id);if(!target||target===current)return;
+ save();current=target;state.answers=current.answers||{};state.page=current.page||0;save();renderInfrastructureSelector();render();
+}
+document.getElementById('infrastructureSelect').onchange=e=>switchInfrastructure(e.target.value);
+document.getElementById('addInfrastructure').onclick=()=>{
+ save();const infra={id:newId(),answers:{},page:0};state.infrastructures.push(infra);
+ current=infra;state.answers=infra.answers;state.page=0;save();renderInfrastructureSelector();render();
+};
+document.getElementById('removeInfrastructure').onclick=()=>{
+ if(state.infrastructures.length<2)return;
+ const index=state.infrastructures.indexOf(current);
+ if(!confirm('Remove '+infraName(current,index)+' and all its locally saved answers? This cannot be undone.'))return;
+ state.infrastructures.splice(index,1);current=state.infrastructures[Math.min(index,state.infrastructures.length-1)];
+ state.answers=current.answers||{};state.page=current.page||0;save();renderInfrastructureSelector();render();
+};
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}
 function radio(q,key,opts){const w=E('div');opts.forEach(o=>{const l=E('label','option'),i=E('input');i.type='radio';i.name=q.id+'-'+key;i.checked=val(q.id,key)===o;i.onchange=()=>{if(i.checked)set(q.id,key,o)};l.append(i,document.createTextNode(o));w.append(l)});return w}
 function multi(q,key,opts){const w=E('div'),bulk=E('div','bulk-select'),all=E('button','secondary small-action','Select all listed options'),clear=E('button','secondary small-action','Clear selections');all.type=clear.type='button';bulk.append(all,clear);w.append(bulk);const render=()=>{w.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=val(q.id,key,[]).includes(i.value));const od=w.querySelector('.other-detail');if(od)od.classList.toggle('hidden',!val(q.id,key,[]).includes('Other'));w.querySelectorAll('.domain-specify').forEach(d=>d.classList.toggle('hidden',!val(q.id,key,[]).includes(d.dataset.choice)))};opts.forEach(o=>{const l=E('label','option'),i=E('input');i.type='checkbox';i.value=o;i.onchange=()=>{let a=[...val(q.id,key,[])];if(i.checked&&!a.includes(o))a.push(o);if(!i.checked)a=a.filter(x=>x!==o);set(q.id,key,a);render()};l.append(i,document.createTextNode(o));w.append(l);if(q.optionDescriptions?.[o]){const hint=E('p','option-description',q.optionDescriptions[o]);w.append(hint)}});if(opts.includes('Other')){const od=text(q,key+'Other','Other (please specify)','text');od.classList.add('other-detail');w.append(od)}if(q.id==='s2q1'&&key==='selected'){
@@ -144,8 +180,10 @@ function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('s
  d.append(heading);if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);scrollTo({top:0,behavior:'smooth'})}
 data.sections.forEach((s,i)=>{const b=E('button',null,s);b.type='button';b.onclick=()=>{state.page=i;save();render()};nav.append(b)});document.querySelectorAll('[data-person]').forEach(i=>{const k=i.dataset.person;i.value=state.people[k]||'';i.oninput=()=>{state.people[k]=i.value;save()}});
 const intro=document.getElementById('intro');intro.className='intro';intro.append(E('h2','intro-title','Screening questionnaire'),E('p','intro-copy',data.scope));
-function result(){return {project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,answers:data.questions.map(q=>({questionId:q.id,section:q.section,question:q.title,response:state.answers[q.id]||{}}))}}
-function filename(ext){const n=(val('s1q1','answer','')||'infrastructure').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'')||'infrastructure';return 'materials-commons-assessment-'+n+'.'+ext}function respondentArchiveName(){
+function result(infra){return {project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,infrastructure:infraName(infra,state.infrastructures.indexOf(infra)),answers:data.questions.map(q=>({questionId:q.id,section:q.section,question:q.title,response:infra.answers?.[q.id]||{}}))}}
+function safeName(v){return String(v||'infrastructure').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'').slice(0,70)||'infrastructure'}
+function filename(infra,index,ext){return String(index+1).padStart(2,'0')+'-'+safeName(infraName(infra,index))+'.'+ext}
+function respondentArchiveName(){
  const clean=value=>String(value||'').trim().replace(/[^a-z0-9_-]+/gi,'-').replace(/^-+|-+$/g,'').slice(0,70);
  const person=clean(state.people.Name)||'unnamed-respondent';
  const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
@@ -172,21 +210,20 @@ document.getElementById('saveBoth').onclick=async()=>{
  const status=document.getElementById('exportStatus');
  const folder=document.querySelector('.preamble-sharepoint-link').href;
  const button=document.getElementById('saveBoth');
- button.disabled=true;
- status.textContent='Preparing JSON and PDF in one ZIP download…';
- // Open while still in the direct click event, before asynchronous PDF processing.
- const sharepointWindow=window.open(folder,'_blank');
- if(sharepointWindow)sharepointWindow.opener=null;
+ button.disabled=true;save();
+ status.textContent='Preparing JSON and PDF for '+state.infrastructures.length+' infrastructure(s)…';
+ const sharepointWindow=window.open(folder,'_blank');if(sharepointWindow)sharepointWindow.opener=null;
  try{
-  const snapshot=result(),pdf=window.MaterialsCommonsPDF.makePdf(snapshot);
-  const files=[
-   {name:filename('json'),bytes:new TextEncoder().encode(JSON.stringify(snapshot,null,2))},
-   {name:filename('pdf'),bytes:new Uint8Array(await pdf.arrayBuffer())}
-  ];
+  const files=[],encoder=new TextEncoder();
+  for(let index=0;index<state.infrastructures.length;index++){
+   const infra=state.infrastructures[index],snapshot=result(infra);
+   files.push({name:filename(infra,index,'json'),bytes:encoder.encode(JSON.stringify(snapshot,null,2))});
+   const pdf=window.MaterialsCommonsPDF.makePdf(snapshot);
+   files.push({name:filename(infra,index,'pdf'),bytes:new Uint8Array(await pdf.arrayBuffer())});
+  }
   download(zipFiles(files),respondentArchiveName());
-  status.textContent='Downloaded one ZIP containing both JSON and PDF. Extract both files and upload them to SharePoint.'+
-   (sharepointWindow===null?' If SharePoint did not open, use the yellow link above.':'');
+  status.textContent='ZIP downloaded with '+files.length+' files (JSON and PDF for each infrastructure). IMPORTANT: Your assessment has NOT been submitted yet. Upload the downloaded ZIP file to the SharePoint folder to complete submission.'+(sharepointWindow===null?' If SharePoint did not open, use the link above.':'');
  }catch(err){status.textContent='Could not prepare the files: '+err.message}
  finally{button.disabled=false}
 };
-document.getElementById('prev').onclick=()=>{if(state.page>0){state.page--;save();render()}};document.getElementById('next').onclick=()=>{if(state.page<data.sections.length-1){state.page++;save();render()}};document.getElementById('clear').onclick=()=>{if(confirm('Clear all locally saved answers for this assessment?')){localStorage.removeItem(KEY);location.reload()}};render();})();
+document.getElementById('prev').onclick=()=>{if(state.page>0){state.page--;save();render()}};document.getElementById('next').onclick=()=>{if(state.page<data.sections.length-1){state.page++;save();render()}};document.getElementById('clear').onclick=()=>{if(confirm('Clear all locally saved answers for this assessment?')){localStorage.removeItem(KEY);location.reload()}};renderInfrastructureSelector();render();})();

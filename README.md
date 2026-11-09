@@ -32,3 +32,16 @@ Test locally using `python -m http.server 8000`, and review the new questions, J
 - Computational modelling: selecting main-level Other reveals **Other (please specify)** immediately below the choice.
 - Ontologies / controlled vocabularies: selecting Other reveals **Other (please specify)**.
 - Existing Version 15 section order and questions are unchanged.
+
+## Version 16 — multiple infrastructures
+- Add any number of infrastructures with **+ Add another infrastructure**.
+- Each infrastructure has its own answers and remembers its current section across switches.
+- The respondent information (name, role, organisation, date) is shared.
+- The selector displays each infrastructure's name from Section 1 Question 1; unnamed entries use numbered placeholders.
+- **Remove current** asks for confirmation and deletes only that infrastructure's answers.
+- One download ZIP contains **one JSON and one PDF per infrastructure**, with unique numbered filenames.
+- Existing single-infrastructure drafts are migrated automatically on first load. The local-storage key remains unchanged.
+- All five questionnaire sections and Version 15 fields are retained.
+
+## Submission instructions
+Respondents must download the ZIP and upload the ZIP itself to the designated SharePoint folder. Downloading does not submit responses. These instructions appear at the beginning and end of the questionnaire and in the download confirmation.
