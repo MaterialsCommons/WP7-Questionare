@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 14,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -139,8 +139,8 @@
       "id": "s1q8",
       "section": "Infrastructure & Governance",
       "sectionIndex": 0,
-      "title": "Is there willingness to join a federation?",
-      "help": "Willingness to participate in a federation, both technically (e.g. identity and access management, protocols, interoperability) and legally (e.g. licensing data for reuse).",
+      "title": "Is the infrastructure willing to join the Materials Commons federation?",
+      "help": "Indicate willingness to participate in the Materials Commons federation, both technically (e.g. identity and access management, protocols, interoperability) and legally (e.g. licensing data for reuse).",
       "type": "federation",
       "options": null
     },
@@ -149,7 +149,7 @@
       "section": "Infrastructure & Governance",
       "sectionIndex": 0,
       "title": "What is the scale and usage of the infrastructure?",
-      "help": "Approximate size of the infrastructure and level of usage.",
+      "help": "Provide approximate figures where available. Records are individual database or catalogue entries; datasets are distinct data collections; other relevant digital research objects include models, workflows or software (excluding datasets already counted). Active users accessed the service during the reporting period; registered users include both active and inactive accounts. Leave unknown or inapplicable fields blank.",
       "type": "scale",
       "options": null
     },
@@ -175,6 +175,19 @@
         "Molecular systems",
         "Hybrid materials",
         "Other"
+      ]
+    },
+    {
+      "id": "s2q1b",
+      "section": "Scientific Scope",
+      "sectionIndex": 1,
+      "title": "Does the infrastructure plan to cover additional materials domains or types of digital research objects in the future?",
+      "help": "Describe planned extensions beyond current coverage, including materials domains, datasets, models, workflows, software or other digital research objects. This question concerns future ambitions, not capabilities already available.",
+      "type": "futureScope",
+      "options": [
+        "Yes",
+        "No",
+        "Unknown"
       ]
     },
     {
@@ -301,8 +314,8 @@
       "section": "Data Representation & Standards",
       "sectionIndex": 2,
       "title": "Is the structure/schema of the data documented?",
-      "help": "Documented structure.",
-      "type": "statusurl",
+      "help": "Indicate whether the data structure or schema is documented. If multiple schemas are used, add a separate documentation URL for each one.",
+      "type": "statusurls",
       "options": [
         "Yes",
         "Partly",
@@ -517,7 +530,7 @@
       "section": "Interoperability & Reuse",
       "sectionIndex": 4,
       "title": "Additional comments on interoperability",
-      "help": "Anything not covered above.",
+      "help": "Optional: Describe interoperability aspects not covered above, such as technical limitations, compatibility challenges, planned improvements, integration requirements or other relevant considerations.",
       "type": "textarea",
       "options": null
     }

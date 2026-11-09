@@ -1,5 +1,4 @@
-
-name: Deploy main questionnaire to GitHub Pages
+name: Deploy Materials Commons questionnaire to GitHub Pages
 
 on:
   push:
@@ -13,29 +12,23 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Configure Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
-
-      - name: Upload main questionnaire
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

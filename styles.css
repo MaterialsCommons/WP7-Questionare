@@ -91,3 +91,10 @@
 /* High-visibility SharePoint link in the preamble */
 .notice a.preamble-sharepoint-link{color:#ffdf63;font-weight:750;text-decoration:underline;text-underline-offset:3px}
 .notice a.preamble-sharepoint-link:hover,.notice a.preamble-sharepoint-link:focus-visible{color:#fff0a8}
+
+/* Version 14: multiple schema URLs and scale descriptions */
+.schema-url-row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.schema-url-row input{flex:1;min-width:0}
+.schema-urls>button{margin-top:8px}
+.scale-field .question-help{margin:3px 0 10px}
+.future-scope-details{margin-top:14px}

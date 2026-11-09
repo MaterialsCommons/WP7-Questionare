@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=13',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
+const data=await (await fetch('questionnaire.json?v=14',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
 function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}
@@ -24,25 +24,56 @@ q.options.main.forEach(o=>{
 });
 f.append(mainWrap);
 syncNested()
-}else if(q.type==='contact'){f.append(radio(q,'status',q.options));const d=E('div','detail-grid');d.append(text(q,'contactName','Contact name'),text(q,'contactEmail','Contact email','email'));f.append(d)}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'))}else if(q.type==='scale'){const d=E('div','detail-grid');d.append(text(q,'records','Number of records / datasets / relevant objects'),text(q,'activeUsers','Number of active users'),text(q,'period','Reporting period'),text(q,'otherScale','Other scale information'));f.append(d)}else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
-function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');d.append(E('h3',null,(i+1)+'. '+q.title));if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);
-requestAnimationFrame(() => {
-  if (state.page === 0) {
-    // First tab: return to the very top of the questionnaire
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  } else {
-    // Other tabs: show the navigation tabs at the top
-    const top = nav.getBoundingClientRect().top + window.scrollY - 20;
-
-    window.scrollTo({
-      top: Math.max(0, top),
-      behavior: 'smooth'
-    });
-  }
-});}
+}else if(q.type==='contact'){f.append(radio(q,'status',q.options));const d=E('div','detail-grid');d.append(text(q,'contactName','Contact name'),text(q,'contactEmail','Contact email','email'));f.append(d)}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'));}else if(q.type==='scale'){
+ const d=E('div','detail-grid');
+ const fields=[
+ ['records','Number of records','Individual database or catalogue entries, as defined by the infrastructure.'],
+ ['datasets','Number of datasets','Distinct data collections managed or published by the infrastructure.'],
+ ['digitalObjects','Number of other relevant digital research objects','Models, workflows, software or other identifiable digital objects; exclude datasets already counted.'],
+ ['activeUsers','Number of active users','Users who accessed or used the infrastructure during the reporting period.'],
+ ['registeredUsers','Number of registered users (total)','All registered accounts, including active and inactive users. Do not add this to active users.'],
+ ['period','Reporting period','e.g. 2025 or last 12 months.'],
+ ['otherScale','Other scale information / counting notes (optional)','Explain definitions, estimates or other usage indicators.']
+ ];
+ for(const [key,label,hint] of fields){const box=E('div','scale-field');box.append(text(q,key,label,key==='otherScale'?'textarea':'text'),E('p','question-help',hint));d.append(box)}
+ f.append(d)
+}else if(q.type==='futureScope'){
+ const options=q.options||[],wrap=E('div');
+ const details=E('div','future-scope-details');
+ details.append(text(q,'plannedObjects','Planned additional domains or digital research objects','textarea'),text(q,'timeframe','Expected timeframe (optional)'));
+ const refresh=()=>details.classList.toggle('hidden',val(q.id,'status')!=='Yes');
+ options.forEach(o=>{const l=E('label','option'),i=E('input');i.type='radio';i.name=q.id+'-status';i.checked=val(q.id,'status')===o;i.onchange=()=>{if(i.checked){set(q.id,'status',o);refresh()}};l.append(i,document.createTextNode(o));wrap.append(l)});
+ wrap.append(details);refresh();f.append(wrap)
+}else if(q.type==='statusurls'){
+ f.append(radio(q,'status',q.options));
+ const wrap=E('div','schema-urls'),heading=E('p','question-help','Schema / documentation URLs (one URL per field)');
+ wrap.append(heading);
+ // Keep the original "details" answer as the first URL for existing saved drafts.
+ let urls=val(q.id,'urls',null);
+ if(!Array.isArray(urls))urls=[val(q.id,'details','')];
+ const redraw=()=>{
+  wrap.querySelectorAll('.schema-url-row').forEach(n=>n.remove());
+  urls.forEach((url,index)=>{
+   const row=E('div','schema-url-row'),field=E('input'),remove=E('button','secondary small-action','Remove');
+   field.type='url';field.placeholder='https://example.org/schema';field.setAttribute('aria-label','Schema URL '+(index+1));field.value=url;
+   field.oninput=()=>{urls[index]=field.value;set(q.id,'urls',[...urls]);if(index===0)set(q.id,'details',field.value)};
+   row.append(field);
+   if(urls.length>1){remove.type='button';remove.onclick=()=>{urls.splice(index,1);set(q.id,'urls',[...urls]);set(q.id,'details',urls[0]||'');redraw()};row.append(remove)}
+   wrap.insertBefore(row,add);
+  })
+ };
+ const add=E('button','secondary small-action','+ Add another schema URL');add.type='button';
+ add.onclick=()=>{urls.push('');set(q.id,'urls',[...urls]);redraw()};
+ wrap.append(add);redraw();f.append(wrap)
+}else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
+function render(){survey.innerHTML='';const sec=data.sections[state.page],h=E('section');h.append(E('h2',null,sec),E('p','muted',data.sectionPurposes[sec]||''));data.questions.filter(q=>q.section===sec).forEach((q,i)=>{const d=E('div','question');const heading=E('h3');
+ if(q.id==='s1q8'){
+  heading.append(document.createTextNode((i+1)+'. Is the infrastructure willing to join the '));
+  const link=E('a',null,'Materials Commons federation');
+  link.href='https://www.materialscommons.eu/';link.target='_blank';link.rel='noopener noreferrer';
+  heading.append(link,document.createTextNode('?'));
+ }else heading.textContent=(i+1)+'. '+q.title;
+ d.append(heading);if(q.help)d.append(E('p','question-help',q.help));d.append(renderControl(q));h.append(d)});survey.append(h);[...nav.children].forEach((b,i)=>b.classList.toggle('active',i===state.page));document.getElementById('progressFill').style.width=((state.page+1)/data.sections.length*100)+'%';document.getElementById('prev').disabled=state.page===0;document.getElementById('next').classList.toggle('hidden',state.page===data.sections.length-1);document.getElementById('exportActions').classList.toggle('hidden',state.page!==data.sections.length-1);scrollTo({top:0,behavior:'smooth'})}
 data.sections.forEach((s,i)=>{const b=E('button',null,s);b.type='button';b.onclick=()=>{state.page=i;save();render()};nav.append(b)});document.querySelectorAll('[data-person]').forEach(i=>{const k=i.dataset.person;i.value=state.people[k]||'';i.oninput=()=>{state.people[k]=i.value;save()}});
 const intro=document.getElementById('intro');intro.className='intro';intro.append(E('h2','intro-title','Screening questionnaire'),E('p','intro-copy',data.scope));
 function result(){return {project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,answers:data.questions.map(q=>({questionId:q.id,section:q.section,question:q.title,response:state.answers[q.id]||{}}))}}

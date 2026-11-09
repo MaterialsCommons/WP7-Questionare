@@ -73,9 +73,9 @@ The ZIP export filename includes the respondent's Name from Assessment informati
 
 ZIP export filenames now start with the respondent name for easier alphabetical sorting.
 
+## Version 14 — final wording refinement
 
-## Questionnaire versions
-
-### Production version (Version 13)
-[Open production questionnaire](https://materialscommons.github.io/WP7-Questionare/)
-
+- Future scope question now asks directly whether extensions are planned, with Yes / No / Unknown responses; Yes reveals details and timeframe.
+- Federation heading links Materials Commons federation to https://www.materialscommons.eu/.
+- Federation explanation restores the technical and legal examples.
+- Version remains 14.
