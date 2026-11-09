@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "project": "Materials Commons",
   "title": "Infrastructure assessment questionnaire",
   "scope": "This questionnaire assesses infrastructures that manage, expose, and enable the reuse of materials data and related digital research objects. Please provide your name, role/position, organisation and assessment date below. The name of the infrastructure is requested in Question 1.",
@@ -89,7 +89,7 @@
       "sectionIndex": 0,
       "title": "Which additional services or capabilities does the infrastructure provide?",
       "help": "Beyond data management and access, select all that apply.",
-      "type": "multi",
+      "type": "capabilities",
       "options": [
         "Data processing / analysis tools",
         "Workflow execution",
@@ -136,6 +136,20 @@
       "options": null
     },
     {
+      "id": "s1q7b",
+      "section": "Infrastructure & Governance",
+      "sectionIndex": 0,
+      "title": "Is the infrastructure already participating in another federation, consortium or research centre?",
+      "help": "Indicate current or planned participation in other federations, consortia, research centres or coordinated initiatives.",
+      "type": "membership",
+      "options": [
+        "Yes",
+        "No",
+        "Planned",
+        "Unknown"
+      ]
+    },
+    {
       "id": "s1q8",
       "section": "Infrastructure & Governance",
       "sectionIndex": 0,
@@ -171,11 +185,16 @@
         "Biomaterials",
         "Construction materials",
         "Functional materials",
-        "Cross-domain",
         "Molecular systems",
         "Hybrid materials",
+        "Cross-domain",
+        "General-purpose / no specific materials-domain mandate",
         "Other"
-      ]
+      ],
+      "optionDescriptions": {
+        "Cross-domain": "Covers multiple materials domains (for example metals, ceramics, polymers and semiconductors), rather than focusing on a single domain.",
+        "General-purpose / no specific materials-domain mandate": "Not restricted to particular materials domains or disciplines; accepts or manages research data across a broad range of scientific fields."
+      }
     },
     {
       "id": "s2q1b",
@@ -386,7 +405,8 @@
         "PaNET",
         "Domain ontology",
         "Local vocabulary",
-        "None"
+        "None",
+        "Other"
       ]
     },
     {
@@ -424,8 +444,8 @@
       "id": "s4q2",
       "section": "Programmatic Access & Interfaces",
       "sectionIndex": 3,
-      "title": "How can software access the data or metadata?",
-      "help": "Machine interfaces.",
+      "title": "Which programmatic interfaces or communication protocols does the infrastructure support?",
+      "help": "Select all interfaces and protocols through which software can access data or metadata. Retrieval mechanisms are covered separately in Question 5.",
       "type": "multi",
       "options": [
         "REST API",
@@ -434,8 +454,9 @@
         "SPARQL",
         "OAI-PMH",
         "SDK",
-        "Bulk download",
-        "File transfer",
+        "SFTP",
+        "HTTPS-based file transfer",
+        "WebDAV",
         "Other"
       ]
     },
@@ -479,7 +500,7 @@
       "section": "Programmatic Access & Interfaces",
       "sectionIndex": 3,
       "title": "Which automated data retrieval mechanisms are available?",
-      "help": "Automated retrieval.",
+      "help": "Select automated retrieval mechanisms. Specific interfaces and protocols are covered in Question 2.",
       "type": "multi",
       "options": [
         "API",
@@ -490,6 +511,21 @@
         "File transfer",
         "Query-result export",
         "Other"
+      ]
+    },
+    {
+      "id": "s1q7c",
+      "section": "Programmatic Access & Interfaces",
+      "sectionIndex": 3,
+      "title": "Can data or metadata from the infrastructure be discovered, queried or accessed through external platforms?",
+      "help": "Indicate whether external portals, catalogues, federated search systems or other services can discover, query or retrieve the infrastructure’s data or metadata.",
+      "type": "externalAccess",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "Planned",
+        "Unknown"
       ]
     },
     {

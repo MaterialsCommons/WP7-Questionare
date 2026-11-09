@@ -1,81 +1,34 @@
-# Materials Commons Infrastructure Assessment
+# Materials Commons infrastructure questionnaire — Version 15
 
-Static, offline-first Materials Commons infrastructure assessment questionnaire based on the supplied `Infrastructure_assessment_questionare.xlsx`. This version is configured for **GitHub Pages**.
+Based on the deployed Version 14 website package, preserving the established five sections, exports, deployment workflow, and local draft key.
 
-## What it does
+## Changes
+- Infrastructure & Governance: new federation/consortium/research-centre membership question.
+- Programmatic Access & Interfaces Q6: new question about discovery, querying, and retrieval through external platforms, with conditional details (moved from Section 1; existing answer ID `s1q7c` retained for draft compatibility).
+- Infrastructure & Governance: optional operational status, access conditions and capacity details when HPC/cloud resources are selected.
+- Scientific Scope: add general-purpose/no domain mandate option and explanatory notes for both Cross-domain and General-purpose.
+- Programmatic Access & Interfaces Q2: focus on interfaces/protocols including REST, SFTP, HTTPS and WebDAV.
+- Programmatic Access & Interfaces Q5: retain existing retrieval mechanisms, clarifying their distinction from Q2.
+- Version updated to 15 in page label, questionnaire metadata, and asset cache-busting parameters.
 
-- Five sections matching the Excel questionnaire.
-- Appropriate single-choice, multi-select, URL, free-text and composite answer controls.
-- Browser-local draft saving; responses are not posted to GitHub.
-- JSON export for aggregation and PDF export for a readable assessment record.
-- Responsive layout based on the reference project.
+## Deploy
+Copy the files into the root of the `main` branch of your existing GitHub repository. Keep your existing repository configuration if it differs. Commit and push to `main`; the included Pages workflow is unchanged.
 
-## Publish with GitHub Pages
+## Compatibility
+The browser draft storage key is unchanged. Existing selected options for Section 4 Q2 `Bulk download` and `File transfer` no longer appear in Q2; respondents should review and reselect relevant protocols there. These retrieval capabilities remain available in Q5. New question IDs are additive; existing IDs are preserved.
 
-1. Create a GitHub repository and place all files from this folder at the repository root.
-2. Push to the `main` branch.
-3. In GitHub, open **Settings → Pages**. Under **Build and deployment → Source**, choose **GitHub Actions**.
-4. Open **Actions** and wait for `Deploy Materials Commons questionnaire to GitHub Pages` to complete.
-5. Return to **Settings → Pages** to open the published site URL.
+Test locally using `python -m http.server 8000`, and review the new questions, JSON/PDF export and draft retention before publishing.
 
-The workflow is `.github/workflows/pages.yml`. Unlike the reference project, no `.gitlab-ci.yml` is required.
+## Version 15 refinement — Other (please specify)
+- Ontologies / controlled vocabularies: add Other with conditional free-text input.
+- Scientific Scope materials domains: existing Other conditional free-text input retained.
+- Computational modelling and simulation: add conditional free-text input for the main Other option (nested electronic-structure Other already supported).
+- External platform capabilities: add Other with conditional free-text input.
+- Version remains 15; existing question IDs and stored answers are preserved.
 
-## Local preview
-
-Run `python3 -m http.server 8000` in this folder and open `http://localhost:8000`. Do not rely on opening `index.html` directly because browsers may block loading `questionnaire.json` from a local file URL.
-
-## Files
-
-- `index.html` — page shell and assessment metadata.
-- `styles.css` — responsive styling adapted from the reference project.
-- `app.js` — rendering, local draft storage and exports.
-- `questionnaire.json` — questionnaire content derived from the Excel workbook.
-- `pdf-export.js` — self-contained PDF export.
-- `.github/workflows/pages.yml` — GitHub Pages deployment.
-
-## Data/privacy model
-
-The site is static. Answers remain in browser `localStorage` until cleared and are exported locally as files. GitHub Pages hosts the questionnaire application but does not receive the completed assessment through this application. If central submission is later required, add an approved destination/workflow separately.
-
-## Version 3 corrections
-
-The assessment-information block contains **Name**, **Role / position**, **Organisation**, and **Date** only.
-The infrastructure name is collected in Question 1.
-
-The computational-modelling question uses a nested control: selecting **Electronic-structure calculations**
-reveals DFT, wave-function-based methods, Green-function-based methods, and other electronic-structure methods.
-
-## Version 7
-
-Infrastructure & Governance question 5 is split into data-related services and additional services. Each option has a short definition directly underneath. Existing answer storage key is retained to preserve drafts. The new question uses the distinct ID `s1q5b`.
-
-## Version 8
-
-Replaced Experimental facility services with Automated / remotely accessible experimental facilities, including a definition covering self-driving laboratories.
-
-## Version 9: SharePoint submission instructions
-
-Respondents download both JSON and PDF files, open the linked **Questionare Answers** SharePoint folder and upload both files manually. The site does not upload data automatically; SharePoint access permissions are required. The folder link appears in the preamble and the Save assessment area.
-
-## Version 10
-
-A single export button requests JSON and PDF downloads and opens the SharePoint folder in a new tab. Respondents must manually upload both files. Browsers may require permission for multiple downloads or pop-ups. The SharePoint link in the preamble is yellow.
-
-## Version 11
-
-Fixed unreliable double-download behavior. One click now downloads a single ZIP containing separate JSON and PDF files and opens SharePoint. Extract and upload both files.
-
-## Version 12
-
-The ZIP export filename includes the respondent's Name from Assessment information and a UTC timestamp. Names are sanitized for safe filenames; blank names use `unnamed-respondent`. This reduces accidental overwriting of uploaded assessments.
-
-## Version 13
-
-ZIP export filenames now start with the respondent name for easier alphabetical sorting.
-
-## Version 14 — final wording refinement
-
-- Future scope question now asks directly whether extensions are planned, with Yes / No / Unknown responses; Yes reveals details and timeframe.
-- Federation heading links Materials Commons federation to https://www.materialscommons.eu/.
-- Federation explanation restores the technical and legal examples.
-- Version remains 14.
+## Version 15 follow-up refinements
+- Technical contacts: use **+ Add another contact** for multiple name/topic/email entries. Original first-contact name and email answer keys remain intact.
+- Scientific Scope: Cross-domain and General-purpose each reveal their own optional specification box when selected; Other reveals **Other (please specify)**.
+- Computational modelling: selecting main-level Other reveals **Other (please specify)** immediately below the choice.
+- Ontologies / controlled vocabularies: selecting Other reveals **Other (please specify)**.
+- Existing Version 15 section order and questions are unchanged.

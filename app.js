@@ -1,13 +1,46 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=14',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
+const data=await (await fetch('questionnaire.json?v=15',{cache:'no-store'})).json();const KEY='materials-commons-infrastructure-assessment-v6';let state={people:{},answers:{},page:0};try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state={...state,...s}}catch{};
 const E=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e},save=()=>localStorage.setItem(KEY,JSON.stringify(state));const survey=document.getElementById('survey'),nav=document.getElementById('nav');
 function set(id,k,v){state.answers[id]??={};state.answers[id][k]=v;save()}function val(id,k,d=''){return state.answers[id]?.[k]??d}
 function text(q,key,label,type='text'){const l=E('label','answer-label',label),i=E(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=val(q.id,key);i.oninput=()=>set(q.id,key,i.value);l.append(i);return l}
 function radio(q,key,opts){const w=E('div');opts.forEach(o=>{const l=E('label','option'),i=E('input');i.type='radio';i.name=q.id+'-'+key;i.checked=val(q.id,key)===o;i.onchange=()=>{if(i.checked)set(q.id,key,o)};l.append(i,document.createTextNode(o));w.append(l)});return w}
-function multi(q,key,opts){const w=E('div'),bulk=E('div','bulk-select'),all=E('button','secondary small-action','Select all listed options'),clear=E('button','secondary small-action','Clear selections');all.type=clear.type='button';bulk.append(all,clear);w.append(bulk);const render=()=>{w.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=val(q.id,key,[]).includes(i.value));const od=w.querySelector('.other-detail');if(od)od.classList.toggle('hidden',!val(q.id,key,[]).includes('Other'))};opts.forEach(o=>{const l=E('label','option'),i=E('input');i.type='checkbox';i.value=o;i.onchange=()=>{let a=[...val(q.id,key,[])];if(i.checked&&!a.includes(o))a.push(o);if(!i.checked)a=a.filter(x=>x!==o);set(q.id,key,a);render()};l.append(i,document.createTextNode(o));w.append(l);if(q.optionDescriptions?.[o]){const hint=E('p','option-description',q.optionDescriptions[o]);w.append(hint)}});if(opts.includes('Other')){const od=text(q,key+'Other','Other (please specify)','text');od.classList.add('other-detail');w.append(od)}all.onclick=()=>{set(q.id,key,opts.filter(x=>!['Other','Unknown','None','Not applicable'].includes(x)));render()};clear.onclick=()=>{set(q.id,key,[]);set(q.id,key+'Other','');render()};render();return w}
-function renderControl(q){const f=E('div');if(q.type==='text')f.append(text(q,'answer','Response'));else if(q.type==='url')f.append(text(q,'answer','URL','url'));else if(q.type==='textarea')f.append(text(q,'answer','Response','textarea'));else if(q.type==='single')f.append(radio(q,'answer',q.options));else if(q.type==='multi')f.append(multi(q,'selected',q.options));else if(q.type==='groupmulti'){for(const [g,opts] of Object.entries(q.options)){const fs=E('fieldset','groupbox'),lg=E('legend',null,g);fs.append(lg,multi(q,'selected-'+g,opts));f.append(fs)}}else if(q.type==='nestedmulti'){
+function multi(q,key,opts){const w=E('div'),bulk=E('div','bulk-select'),all=E('button','secondary small-action','Select all listed options'),clear=E('button','secondary small-action','Clear selections');all.type=clear.type='button';bulk.append(all,clear);w.append(bulk);const render=()=>{w.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=val(q.id,key,[]).includes(i.value));const od=w.querySelector('.other-detail');if(od)od.classList.toggle('hidden',!val(q.id,key,[]).includes('Other'));w.querySelectorAll('.domain-specify').forEach(d=>d.classList.toggle('hidden',!val(q.id,key,[]).includes(d.dataset.choice)))};opts.forEach(o=>{const l=E('label','option'),i=E('input');i.type='checkbox';i.value=o;i.onchange=()=>{let a=[...val(q.id,key,[])];if(i.checked&&!a.includes(o))a.push(o);if(!i.checked)a=a.filter(x=>x!==o);set(q.id,key,a);render()};l.append(i,document.createTextNode(o));w.append(l);if(q.optionDescriptions?.[o]){const hint=E('p','option-description',q.optionDescriptions[o]);w.append(hint)}});if(opts.includes('Other')){const od=text(q,key+'Other','Other (please specify)','text');od.classList.add('other-detail');w.append(od)}if(q.id==='s2q1'&&key==='selected'){
+ for(const [option,field,label] of [
+ ['Cross-domain','crossDomainSpecify','Cross-domain — please specify the materials domains'],
+ ['General-purpose / no specific materials-domain mandate','generalPurposeSpecify','General-purpose — please specify the scope (optional)']
+ ]){
+  const detail=text(q,field,label,'textarea');detail.classList.add('domain-specify');detail.dataset.choice=option;const choice=Array.from(w.querySelectorAll('label.option')).find(l=>l.querySelector('input')?.value===option);if(choice){const hint=choice.nextElementSibling?.classList.contains('option-description')?choice.nextElementSibling:choice;hint.after(detail)}else w.append(detail);
+ }
+}all.onclick=()=>{set(q.id,key,opts.filter(x=>!['Other','Unknown','None','Not applicable'].includes(x)));render()};clear.onclick=()=>{set(q.id,key,[]);set(q.id,key+'Other','');render()};render();return w}
+function renderControl(q){const f=E('div');if(q.type==='text')f.append(text(q,'answer','Response'));else if(q.type==='url')f.append(text(q,'answer','URL','url'));else if(q.type==='textarea')f.append(text(q,'answer','Response','textarea'));else if(q.type==='single')f.append(radio(q,'answer',q.options));else if(q.type==='capabilities'){
+ f.append(multi(q,'selected',q.options));
+ const details=E('fieldset','groupbox hpc-details');
+ details.append(E('legend',null,'Computational resources (HPC / cloud) — additional details (optional)'));
+ details.append(E('p','question-help','Specify whether this is a production service or a pilot, its access conditions and approximate capacity.'));
+ const status=E('fieldset','groupbox');
+ status.append(E('legend',null,'Operational status'),radio(q,'hpcStatus',['Operational / production service','Pilot / demonstration','Planned','Unknown']));
+ const access=E('fieldset','groupbox');
+ access.append(E('legend',null,'Access conditions'),multi(q,'hpcAccess',['Open access','Registration required','Restricted to eligible users or partners','Application / resource allocation required','Paid access','Other']));
+ details.append(status,access,text(q,'hpcCapacity','Capacity or limitations (optional)','textarea'));
+ const refresh=()=>details.classList.toggle('hidden',!val(q.id,'selected',[]).includes('Computational resources (HPC / cloud)'));
+ f.addEventListener('change',refresh);refresh();f.append(details)
+}else if(q.type==='membership'||q.type==='externalAccess'){
+ f.append(radio(q,'status',q.options));
+ const details=E('div','conditional-details');
+ if(q.type==='membership'){
+  details.append(text(q,'initiatives','Names of federations, consortia or research centres (and optional URLs)','textarea'));
+ }else{
+  details.append(text(q,'platforms','External platforms (names and optional URLs)','textarea'));
+  const fs=E('fieldset','groupbox');
+  fs.append(E('legend',null,'What is possible through these platforms?'));
+  fs.append(multi(q,'capabilities',['Data or metadata discovery','Federated querying','Data or metadata retrieval','Other']));
+  details.append(fs);
+ }
+ const refresh=()=>details.classList.toggle('hidden',!(q.type==='membership'?['Yes','Planned']:['Yes','Partly','Planned']).includes(val(q.id,'status')));
+ f.addEventListener('change',refresh);refresh();f.append(details)
+}else if(q.type==='multi')f.append(multi(q,'selected',q.options));else if(q.type==='groupmulti'){for(const [g,opts] of Object.entries(q.options)){const fs=E('fieldset','groupbox'),lg=E('legend',null,g);fs.append(lg,multi(q,'selected-'+g,opts));f.append(fs)}}else if(q.type==='nestedmulti'){
 const mainWrap=E('div'),selected=[...val(q.id,'selected',[])],nestedBlocks={};
-const syncNested=()=>{for(const [parent,fs] of Object.entries(nestedBlocks)){fs.classList.toggle('hidden',!val(q.id,'selected',[]).includes(parent))}};
+const syncNested=()=>{for(const [parent,fs] of Object.entries(nestedBlocks)){fs.classList.toggle('hidden',!val(q.id,'selected',[]).includes(parent))}const other=mainWrap.querySelector('.other-detail');if(other)other.classList.toggle('hidden',!val(q.id,'selected',[]).includes('Other'))};
 q.options.main.forEach(o=>{
   const l=E('label','option'),i=E('input');
   i.type='checkbox';i.value=o;i.checked=selected.includes(o);
@@ -22,9 +55,44 @@ q.options.main.forEach(o=>{
     mainWrap.append(fs);
   }
 });
+if(q.options.main.includes('Other')){
+ const other=text(q,'selectedOther','Other (please specify)','textarea');
+ other.classList.add('other-detail');
+ const otherOption=Array.from(mainWrap.querySelectorAll('label.option')).find(l=>l.querySelector('input')?.value==='Other');
+ if(otherOption)otherOption.after(other);else mainWrap.append(other);
+}
 f.append(mainWrap);
 syncNested()
-}else if(q.type==='contact'){f.append(radio(q,'status',q.options));const d=E('div','detail-grid');d.append(text(q,'contactName','Contact name'),text(q,'contactEmail','Contact email','email'));f.append(d)}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'));}else if(q.type==='scale'){
+}else if(q.type==='contact'){
+ f.append(radio(q,'status',q.options));
+ const contacts=E('div','contact-list'),add=E('button','secondary small-action','+ Add another contact');add.type='button';
+ const draw=()=>{
+  contacts.replaceChildren();
+  const extras=val(q.id,'additionalContacts',[]);
+  const count=1+extras.length;
+  for(let n=0;n<count;n++){
+   const card=E('fieldset','groupbox contact-entry');
+   card.append(E('legend',null,'Technical contact '+(n+1)));
+   if(n===0){
+    card.append(text(q,'contactName','Name'),text(q,'contactTopic','Topic / area of responsibility'),text(q,'contactEmail','Email','email'));
+   }else{
+    const index=n-1;
+    const addField=(key,label,type='text')=>{
+     const l=E('label','answer-label',label),input=E('input');input.type=type;input.value=extras[index]?.[key]||'';
+     input.oninput=()=>{const next=[...val(q.id,'additionalContacts',[])];next[index]={...next[index],[key]:input.value};set(q.id,'additionalContacts',next)};
+     l.append(input);return l;
+    };
+    card.append(addField('name','Name'),addField('topic','Topic / area of responsibility'),addField('email','Email','email'));
+    const remove=E('button','secondary small-action','Remove contact');remove.type='button';
+    remove.onclick=()=>{set(q.id,'additionalContacts',val(q.id,'additionalContacts',[]).filter((_,i)=>i!==index));draw()};
+    card.append(remove);
+   }
+   contacts.append(card);
+  }
+ };
+ add.onclick=()=>{set(q.id,'additionalContacts',[...val(q.id,'additionalContacts',[]),{name:'',topic:'',email:''}]);draw()};
+ f.append(contacts,add);draw();
+}else if(q.type==='funding'){const d=E('div','detail-grid');d.append(text(q,'securedUntil','Funding secured until (year/date)'),text(q,'fundingOrganisation','Funding organisation(s) / programme(s)'));f.append(d,text(q,'fundingComments','Comments / unknowns','textarea'))}else if(q.type==='federation'){const a=E('fieldset','groupbox'),b=E('fieldset','groupbox');a.append(E('legend',null,'Technical willingness'),radio(q,'technical',['Yes','No','Unknown']));b.append(E('legend',null,'Legal / data reuse willingness'),radio(q,'legal',['Yes','No','Unknown']));f.append(a,b,text(q,'comments','Comments','textarea'));}else if(q.type==='scale'){
  const d=E('div','detail-grid');
  const fields=[
  ['records','Number of records','Individual database or catalogue entries, as defined by the infrastructure.'],

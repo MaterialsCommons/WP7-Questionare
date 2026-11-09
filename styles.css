@@ -98,3 +98,7 @@
 .schema-urls>button{margin-top:8px}
 .scale-field .question-help{margin:3px 0 10px}
 .future-scope-details{margin-top:14px}
+
+/* Version 15: contextual follow-up questions */
+.hpc-details,.conditional-details{margin-top:14px}
+.hpc-details .groupbox,.conditional-details .groupbox{margin-top:10px}
