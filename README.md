@@ -1,3 +1,9 @@
+# Materials Commons infrastructure questionnaire — Version 18
+
+Version 18 changes: single + Add resource button; free-text Category field with hover/focus tooltip; category included in community resources JSON and PDF exports; automatic migration of Version 17 category-grouped browser drafts. Infrastructure questionnaire and SharePoint submission flow remain unchanged.
+
+Deploy all files to GitHub Pages. Browser data stays in the same local storage key.
+
 # Materials Commons infrastructure questionnaire — Version 15
 
 Based on the deployed Version 14 website package, preserving the established five sections, exports, deployment workflow, and local draft key.

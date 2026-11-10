@@ -152,3 +152,15 @@
 .community-resources-box[open] .resource-toggle-label{font-size:0}
 .community-resources-box[open] .resource-toggle-label::after{content:"Click to collapse";font-size:14px}
 .community-resources-box>.resource-callout:focus-visible{outline:3px solid #167e7a;outline-offset:-4px}
+
+/* Version 18: one resource list and a category help tooltip */
+.resource-field > span:first-child{font-weight:600}
+.resource-tooltip{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;margin-left:8px;border-radius:50%;background:#167e7a;color:#fff;font-size:12px;font-weight:bold;cursor:help;position:relative;vertical-align:middle}
+.resource-tooltip-text{visibility:hidden;opacity:0;position:absolute;bottom:130%;left:50%;transform:translateX(-50%);width:min(280px,75vw);padding:12px;background:#204e5d;color:#fff;border-radius:8px;font-size:13px;font-weight:normal;line-height:1.5;z-index:100;transition:opacity .2s;pointer-events:none;text-align:left}
+.resource-tooltip:hover .resource-tooltip-text,.resource-tooltip:focus .resource-tooltip-text{visibility:visible;opacity:1}
+.resource-add{margin-top:16px}
+
+/* Version 18 tooltip alignment fix: keep help text inside the viewport. */
+.community-resources-box[open]{overflow:visible}
+.resource-tooltip-text{left:0;top:calc(100% + 8px);bottom:auto;transform:none;width:min(280px,calc(100vw - 130px));max-width:280px;box-sizing:border-box;white-space:normal;overflow-wrap:break-word}
+.resource-tooltip:focus-visible{outline:2px solid #204e5d;outline-offset:3px}

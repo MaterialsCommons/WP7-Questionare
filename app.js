@@ -1,11 +1,16 @@
 (async()=>{'use strict';
-const data=await (await fetch('questionnaire.json?v=17',{cache:'no-store'})).json();
+const data=await (await fetch('questionnaire.json?v=18',{cache:'no-store'})).json();
 const KEY='materials-commons-infrastructure-assessment-v6';
 let state={people:{},infrastructures:[],activeInfrastructureId:null,page:0,answers:{},resources:{},resourcesTab:false};
 try{const stored=JSON.parse(localStorage.getItem(KEY)||'null');if(stored)state={...state,...stored}}catch{}
 const newId=()=>('infra-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9));
 if(!Array.isArray(state.infrastructures))state.infrastructures=[];
 if(!state.resources||typeof state.resources!=='object'||Array.isArray(state.resources))state.resources={};
+// Migrate Version 17 category-grouped resources into the single Version 18 list.
+if(!Array.isArray(state.resources.items)){
+ const oldCategories=['Infrastructures','Dataspaces','Tools','Workflows','Interfaces','Protocols','Ontologies','Other'];
+ state.resources.items=oldCategories.flatMap(category=>(Array.isArray(state.resources[category])?state.resources[category]:[]).map(entry=>({name:entry.name||'',category,purpose:entry.purpose||'',link:entry.link||''})));
+}
 state.resourcesTab=Boolean(state.resourcesTab);
 if(!state.infrastructures.length)state.infrastructures=[{id:newId(),answers:state.answers&&typeof state.answers==='object'?state.answers:{},page:Number.isInteger(state.page)?state.page:0}];
 state.infrastructures.forEach(infra=>{if(typeof infra.name!=='string')infra.name=String(infra.answers?.s1q1?.answer||'')});
@@ -175,38 +180,37 @@ syncNested()
  add.onclick=()=>{urls.push('');set(q.id,'urls',[...urls]);redraw()};
  wrap.append(add);redraw();f.append(wrap)
 }else if(q.type==='statusurl'||q.type==='statusdetails'){f.append(radio(q,'status',q.options));f.append(text(q,'details',q.type==='statusurl'?'Schema / documentation URL':'Format / details','text'))}return f}
-const RESOURCE_CATEGORIES=['Infrastructures','Dataspaces','Tools','Workflows','Interfaces','Protocols','Ontologies','Other'];
-function resourceEntries(){return RESOURCE_CATEGORIES.flatMap(category=>(state.resources[category]||[]).filter(entry=>Object.values(entry).some(v=>String(v||'').trim())).map(entry=>({category,name:entry.name||'',purpose:entry.purpose||'',link:entry.link||''})))}
+function resourceEntries(){return (state.resources.items||[]).filter(entry=>Object.values(entry).some(v=>String(v||'').trim())).map(entry=>({name:entry.name||'',category:entry.category||'',purpose:entry.purpose||'',link:entry.link||''}))}
 function renderResources(){
  const section=E('section','resource-view');
- section.append(E('p','resource-lead','We want to identify and track resources that already exist and are available to the MaterialsCommons community, such as infrastructures, dataspaces, tools, workflows, interfaces, protocols and ontologies. By sharing their names, purposes and links, you help us build an initial overview of what the community can already use, find opportunities for reuse and collaboration, and avoid overlooking existing work. This is not intended to be a complete or strictly structured catalogue. Please focus on existing resources rather than ideas for future developments. These suggestions are independent of any individual infrastructure in your assessment.'));
- section.append(E('p','resource-hint','Choose a category and click + to add a resource. Only categories you use will display entry fields. For each resource, enter its name, purpose and repository or website link.'));
- for(const category of RESOURCE_CATEGORIES){
-  const group=E('section','resource-category'),header=E('div','resource-category-header'),title=E('h3',null,category),items=E('div','resource-entries');
-  const count=E('span','resource-count');
-  const add=E('button','secondary small-action resource-add','+ Add '+(category==='Other'?'other resource':category.toLowerCase().replace(/s$/,'')+' resource'));
-  add.type='button';
-  header.append(title,count,add);group.append(header,items);
-  const draw=()=>{
-   items.replaceChildren();
-   const entries=state.resources[category]||[];
-   count.textContent=entries.length?entries.length+' added':'';
-   entries.forEach((entry,index)=>{
-    const card=E('fieldset','resource-entry'),legend=E('legend',null,category+' '+(index+1));card.append(legend);
-    for(const [key,label,kind] of [['name','Name','text'],['purpose','Purpose / short description','textarea'],['link','Link to repository or website','url']]){
-     const wrapper=E('label','resource-field',label),input=E(kind==='textarea'?'textarea':'input');
-     if(kind!=='textarea')input.type=kind;
-     input.value=entry[key]||'';input.placeholder=key==='link'?'https://…':key==='purpose'?'What is it used for?':'';
-     input.oninput=()=>{entry[key]=input.value;save()};wrapper.append(input);card.append(wrapper);
+ section.append(E('p','resource-lead','We want to identify and track resources that already exist and are available to the MaterialsCommons community. By sharing their names, categories, purposes and links, you help build an overview of reusable resources and opportunities for collaboration. Please focus on existing resources rather than ideas for future developments. These suggestions are independent of any individual infrastructure in your assessment.'));
+ section.append(E('p','resource-hint','Click + Add resource to enter its name, category, purpose and repository or website link.'));
+ const items=E('div','resource-entries');
+ const add=E('button','secondary resource-add','+ Add resource');add.type='button';
+ const draw=()=>{
+  items.replaceChildren();
+  (state.resources.items||[]).forEach((entry,index)=>{
+   const card=E('fieldset','resource-entry'),legend=E('legend',null,'Resource '+(index+1));card.append(legend);
+   for(const [key,label,kind] of [['name','Name','text'],['category','Category','text'],['purpose','Purpose / short description','textarea'],['link','Link to repository or website','url']]){
+    const wrapper=E('label','resource-field');
+    const labelText=E('span',null,label);wrapper.append(labelText);
+    if(key==='category'){
+     const tooltip=E('span','resource-tooltip','?');tooltip.tabIndex=0;tooltip.setAttribute('role','note');
+     const description='Examples: GitHub organization, repository, documentation, tool, dataspace, workflow, interface, protocol, ontology, or other resource.';
+     tooltip.setAttribute('aria-label',description);
+     tooltip.append(E('span','resource-tooltip-text',description));wrapper.append(tooltip);
     }
-    const remove=E('button','secondary small-action','Remove resource');remove.type='button';
-    remove.onclick=()=>{state.resources[category].splice(index,1);save();draw()};card.append(remove);items.append(card);
-   });
-  };
-  add.onclick=()=>{state.resources[category]??=[];state.resources[category].push({name:'',purpose:'',link:''});save();draw();items.lastElementChild?.querySelector('input')?.focus()};
-  section.append(group);draw();
- }
- document.getElementById('resourceContainer').replaceChildren(section);
+    const input=E(kind==='textarea'?'textarea':'input');if(kind!=='textarea')input.type=kind;
+    input.value=entry[key]||'';
+    input.placeholder=key==='link'?'https://…':key==='category'?'Enter resource category':key==='purpose'?'What is it used for?':'';
+    input.oninput=()=>{entry[key]=input.value;save()};wrapper.append(input);card.append(wrapper);
+   }
+   const remove=E('button','secondary small-action','Remove resource');remove.type='button';
+   remove.onclick=()=>{state.resources.items.splice(index,1);save();draw()};card.append(remove);items.append(card);
+  });
+ };
+ add.onclick=()=>{state.resources.items??=[];state.resources.items.push({name:'',category:'',purpose:'',link:''});save();draw();items.lastElementChild?.querySelector('input')?.focus()};
+ section.append(items,add);document.getElementById('resourceContainer').replaceChildren(section);draw();
 }
 function render(){survey.innerHTML='';
  state.resourcesTab=false;
@@ -272,9 +276,9 @@ document.getElementById('saveBoth').onclick=async()=>{
    const pdf=window.MaterialsCommonsPDF.makePdf(snapshot);
    files.push({name:filename(infra,index,'pdf'),bytes:new Uint8Array(await pdf.arrayBuffer())});
   }
-  const sharedResources={project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,title:'Awesome MaterialsCommons Resources',description:'Community-suggested resources, independent of any infrastructure',resources:RESOURCE_CATEGORIES.map(category=>({category,entries:(state.resources[category]||[]).filter(entry=>Object.values(entry).some(v=>String(v||'').trim()))}))};
+  const sharedResources={project:data.project,version:data.version,exportedAt:new Date().toISOString(),assessment:state.people,title:'Awesome MaterialsCommons Resources',description:'Community-suggested resources, independent of any infrastructure',resources:resourceEntries()};
   files.push({name:'community-resources.json',bytes:encoder.encode(JSON.stringify(sharedResources,null,2))});
-  const resourcePdfResult={version:data.version,assessment:state.people,answers:sharedResources.resources.map(({category,entries})=>({section:'Awesome MaterialsCommons Resources',question:category,questionId:'resource-'+category.toLowerCase(),response:entries.length?{entries:entries.map(e=>({Name:e.name||'',Purpose:e.purpose||'',Link:e.link||''}))}:{}}))};
+  const resourcePdfResult={version:data.version,assessment:state.people,answers:sharedResources.resources.map((entry,index)=>({section:'Awesome MaterialsCommons Resources',question:'Resource '+(index+1),questionId:'resource-'+(index+1),response:{Name:entry.name,Category:entry.category,Purpose:entry.purpose,Link:entry.link}}))};
   const resourcePdf=window.MaterialsCommonsPDF.makePdf(resourcePdfResult);
   files.push({name:'community-resources.pdf',bytes:new Uint8Array(await resourcePdf.arrayBuffer())});
   download(zipFiles(files),respondentArchiveName());
